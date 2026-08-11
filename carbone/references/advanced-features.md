@@ -1,12 +1,14 @@
 # Carbone Advanced Features Reference
 
-Read this file when the user asks for full details on: the `:color` formatter (scopes, types, limitations, `:bindColor`), the `:html` formatter (full reference — supported elements, CSS, options, page breaks, entities, common patterns), native charts (DOCX, ODT/LibreOffice `bindChart`, ECharts), hyperlink edge cases, SVG templates, ODT dynamic forms, or removing placeholder images when value is empty.
+Read this file when the user asks for full details on: the `:color` formatter (scopes, types, limitations, `:bindColor`), the `:html` formatter (full reference — supported elements, CSS, options and themes, page breaks, task-list checkboxes, entities, common patterns), native charts (DOCX, ODT/LibreOffice `bindChart`, ECharts), hyperlink edge cases, SVG templates, ODT dynamic forms, or removing placeholder images when value is empty.
 
 ---
 
 ## Colors — full reference (ENTERPRISE, v4.17+)
 
 `:color(scope, type)` — the tag prints nothing in the document. Color must be **6-digit hex**, with or without `#` (e.g. `FF0000` or `#FF0000`). Invalid colors are replaced with light gray `#888888`.
+
+**Compatible templates**: DOCX, ODT, ODS, ODP, PPTX, HTML — a colored PDF is obtained by converting one of these. A **PDF used as a template** does not support `:color` (see `pdf-templates.md`). Not available in Embedded Carbone JS.
 
 | `scope` | Element targeted |
 |---|---|
@@ -96,7 +98,7 @@ Each tag goes in a separate image placeholder alt-text. The number of placeholde
 {d.notes:convCRLF:html}    ← convert \r\n / \n to native line breaks first; with :html, \n becomes <br> (v3.5.3+)
 ```
 
-**Compatible templates**: ODT, DOCX, HTML (PDF is reached via conversion from these — PDF is not a Carbone template format).
+**Compatible templates**: ODT, DOCX, HTML, Markdown — a PDF result is reached by converting one of these. `:html` does **not** work in a PDF template (a fillable PDF used as input, see `pdf-templates.md`), nor in XLSX/ODS/PPTX/ODP (on the roadmap).
 
 ### Supported HTML elements
 
@@ -109,8 +111,15 @@ Each tag goes in a separate image placeholder alt-text. The number of placeholde
 | Images | `<img src="..." width="X" height="Y">` | URL or Data-URI; size in px; default 5cm if missing |
 | Headings | `<h1>` `<h2>` `<h3>` `<h4>` `<h5>` `<h6>` | Requires `{o.preReleaseFeatureIn=5002000}` |
 | Tables | `<table>` `<tr>` `<th>` `<td>` with `colspan`/`rowspan` | Requires `{o.preReleaseFeatureIn=5002000}` (introduced in v5.0.9, significant fixes in v5.2.0 — use 5002000) |
+| Inline semantics | `<sup>` `<sub>` `<mark>` `<code>` `<kbd>` `<samp>` | v5.11.0+, requires `{o.preReleaseFeatureIn=5011000}`. `<mark>` = fixed yellow highlight (color not customizable); `<code>`/`<kbd>`/`<samp>` = Courier New. Without the flag the content renders unformatted |
+| Preformatted | `<pre>` | v5.11.0+, requires `{o.preReleaseFeatureIn=5011000}`. Courier New, preserves `\n` / `\r\n`; an empty paragraph is added after the block |
+| Horizontal rule | `<hr>` | v5.13.0+, requires `{o.preReleaseFeatureIn=5011000}`. `0.5em` spacing above and below |
+| Quotes | `<blockquote>` | v5.13.0+, requires `{o.preReleaseFeatureIn=5011000}`. Default indentation `40px`; style it with `quotetheme` |
+| Task list checkbox | `<input type="checkbox">` | v5.13.0+, requires `{o.preReleaseFeatureIn=5011000}`. Other `<input>` types are ignored |
 
-**Not supported** (ignored): `<tbody>` `<thead>` `<caption>`, external stylesheets, `<style>` elements, CSS classes, CSS IDs.
+`<hr>`, `<blockquote>` and the checkbox work **everywhere**: inside lists, table cells, headings, and inside a paragraph — which `<hr>` splits in two while keeping the surrounding styles. Spacing and indentation reproduce a browser: `0.5em` around the rule, `40px` per `<blockquote>`, cumulative on each nesting level and added to the indentation of a list.
+
+**Not supported** (ignored): `<tbody>` `<thead>` `<caption>`, `<input>` types other than `checkbox`, external stylesheets, `<style>` elements, CSS classes, CSS IDs.
 
 ### Supported CSS (inline `style` attribute only)
 
@@ -139,18 +148,37 @@ Page breaks apply to `<p>` only — not allowed in headers, footers, or table ce
 
 | Option | Effect | Example |
 |---|---|---|
-| `inline` | Render inside current paragraph. Only: `<a>` `<b>` `<strong>` `<em>` `<i>` `<s>` `<del>` `<u>` | `{d.v:html(inline)}` |
-| `nospace` | Remove empty paragraph added after block elements | `{d.v:html(nospace)}` |
-| `tabletheme:Name` | Apply named Word table theme (DOCX only) | `{d.v:html(tabletheme:GridTable2-Accent3)}` |
-| `headingtheme:prefix` | Use custom heading styles `prefix1`…`prefix6` (themes must already exist in the template) | `{d.v:html(headingtheme:my-theme-)}` |
+| `inline` | Render inside current paragraph. Only: `<a>` `<b>` `<strong>` `<em>` `<i>` `<s>` `<del>` `<u>` `<sup>` `<sub>` `<mark>` `<code>` `<kbd>` `<samp>` | `{d.v:html(inline)}` |
+| `nospace` | Remove empty paragraph added after block elements: `<p>` `<h1>`–`<h6>` `<ul>` `<ol>` `<table>` `<pre>` | `{d.v:html(nospace)}` |
+| `tabletheme:Name` | Apply named Word table theme to `<table>` (DOCX only) | `{d.v:html(tabletheme:GridTable2-Accent3)}` |
+| `headingtheme:prefix` | Use custom heading styles `prefix1`…`prefix6` for `<h1>`–`<h6>` (themes must already exist in the template) | `{d.v:html(headingtheme:my-theme-)}` |
+| `quotetheme:Name` | Apply a paragraph style of the template to `<blockquote>` instead of the default `40px` indentation (v5.13.0+) | `{d.v:html(quotetheme:Quote)}` |
 
 Combine: `{d.value:html(nospace,headingtheme:my-theme-)}`
+
+**`quotetheme` style names**: Word and LibreOffice both ship a `Quote` and an `Intense Quote` paragraph style by default. In ODT, a style name containing a space must be written the way ODF stores it — `Intense Quote` is passed as `Intense_20_Quote`:
+```
+{d.content:html(quotetheme:Quote)}
+{d.content:html(quotetheme:Intense_20_Quote)}    ← ODT
+```
+
+### Task lists / checkboxes (v5.13.0+)
+
+Requires `{o.preReleaseFeatureIn=5011000}`. A checkbox is **ticked** by the HTML `checked` attribute in any of its forms (`checked`, `checked=""`, `checked="checked"`), and unticked without it:
+```html
+<ul><li><input type="checkbox"> todo</li><li><input type="checkbox" checked> done</li></ul>
+```
+- In DOCX the checkbox stays **clickable in Word**; everywhere else it renders as a character (`☑` / `☐`)
+- Like a browser, the bullet of a task item is not rendered
+- Only `<input type="checkbox">` is rendered — all other input types are ignored
 
 ### Font and paragraph behaviour
 - HTML content **inherits** font family and size from the template paragraph where the tag is placed
 - Text alignment from the template is **not** retained
 - By default, `:html` renders content in a **new paragraph**. Use `inline` to stay in the current paragraph
 - Tab characters: use `&ensp;` or `&emsp;` — do NOT use `&#9;` (collapsed to space by HTML parsers)
+- **ODT** (v5.13.0+): when no `headingtheme` is given, `<h1>`–`<h6>` use the template's built-in `Heading_20_1` … `Heading_20_6` styles
+- Write the HTML payload with **lowercase element names, double-quoted attributes, and every tag closed** — uppercase names (`<P>`, `<BR>`) and single-quoted or unquoted attributes (`href='x'`, `href=x`) are only read with `{o.preReleaseFeatureIn=5011000}`
 
 ### HTML entities (v5.5.0+)
 The `:html` formatter supports named, decimal, and hexadecimal HTML entities:

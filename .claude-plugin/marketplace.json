@@ -6,14 +6,14 @@
     "email": "support@carbone.io"
   },
   "metadata": {
-    "description": "Official Carbone skill — complete templating language reference covering tags, loops, conditions, formatters, aggregators, and all output formats (DOCX, XLSX, PPTX, ODT, HTML, Markdown, PDF)",
-    "version": "1.5.0"
+    "description": "Official Carbone skill — complete templating language reference covering tags, loops, conditions, formatters, aggregators, PDF form filling (AcroForm), format support and conversion, and all template formats (DOCX, XLSX, PPTX, ODT, HTML, Markdown, PDF, CSV, TXT, SVG, IDML)",
+    "version": "1.6.0"
   },
   "plugins": [
     {
       "name": "carbone",
-      "version": "1.5.0",
-      "description": "Enables AI to build fully-featured Carbone templates using verified syntax: tags, loops, conditions, formatters, HTML/Markdown output, and embedding tags into AI-generated DOCX, XLSX, PPTX, ODT, HTML, Markdown, and PDF files.",
+      "version": "1.6.0",
+      "description": "Enables AI to build fully-featured Carbone templates using verified syntax: tags, loops, conditions, formatters, PDF form filling (AcroForm), HTML/Markdown output, and embedding tags into AI-generated DOCX, XLSX, PPTX, ODT, HTML, Markdown, and PDF files.",
       "category": "productivity",
       "homepage": "https://carbone.io",
       "repository": "https://github.com/carboneio/carbone-skill",

@@ -30,6 +30,12 @@ Carbone v5 detects template errors more strictly than v4. The most common issue 
 - If an error exists, v5 will report it explicitly rather than silently producing incorrect output — this is a good thing
 - **Recommended**: test your templates in Carbone Studio and verify documents generate without errors under v5 before switching production traffic
 
+**Escape hatch — v4 compatibility mode (v5.13.0+)**
+
+If legacy templates block the switch, a pre-release version code **below `5000000`** (e.g. `{o.preReleaseFeatureIn=4025011}`) stops v5 reporting the missing `[i+1]` end-marker. Set globally via `CARBONE_PRE_RELEASE_FEATURE_IN` to migrate a fleet of templates without editing them.
+
+⚠️ It disables every v5 feature and fix at the same time — go live, then fix the templates and remove it. Semantics and values → `in-template-options.md`.
+
 **2. New document converter — LibreOffice 25.2**
 
 The Carbone Cloud v5 uses **LibreOffice 25.2** (vs 7.5 in v4). PDF rendering — especially from DOCX templates — may vary slightly. Output is generally improved, but visual differences are possible.

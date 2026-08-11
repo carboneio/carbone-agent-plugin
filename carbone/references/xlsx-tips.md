@@ -1,6 +1,6 @@
 # Carbone XLSX/ODS — Formula Tips
 
-Read this file when the user asks about dynamic Excel formulas that survive Carbone row injection, computing totals after a loop, referencing injected rows with MATCH/INDEX, or why a cell's percentage/currency/date format is not being applied.
+Read this file when the user asks about dynamic Excel formulas that survive Carbone row injection, computing totals after a loop, referencing injected rows with MATCH/INDEX, generating one sheet per array item, or why a cell's percentage/currency/date format is not being applied.
 
 ---
 
@@ -38,3 +38,26 @@ Add a static label next to the total cell (e.g. `TOTAL weeks` in column A), then
 =INDEX(B:B, MATCH("TOTAL weeks", A:A, 0))
 ```
 Finds the total row dynamically regardless of how many rows Carbone injected.
+
+---
+
+## One sheet per array item (ODS only)
+
+**ODS templates can generate sheets dynamically** — one tab per item of an array. Aliases are the only way to do it, and it does **not** work with XLSX templates.
+
+Declare two aliases in the content of the first sheet, one holding the loop tag and one holding its end-marker:
+```
+{#sheet1 = d.fruits[i].name}
+{#sheet2 = d.fruits[i+1].name}
+```
+
+Then rename the **sheet tabs** in LibreOffice Calc — the first tab becomes `{$sheet1}`, the second `{$sheet2}`:
+
+| Tab name | Role |
+|---|---|
+| `{$sheet1}` | The sheet that is repeated — its content and formatting are inherited by every generated sheet |
+| `{$sheet2}` | End-marker tab, removed from the output |
+
+At render time Carbone resolves the aliases back to the repetition markers and creates one sheet per array item, each named after the value (`apple`, `banana`, …) and carrying the first sheet's layout.
+
+The cells of the first sheet address the current item through the same outer path — `{d.fruits[i].name}`, and a table inside the sheet is an ordinary nested loop (`{d.fruits[i].nutrients[i].qty}` closed by `{d.fruits[i].nutrients[i+1]}`, see SKILL.md §4b).

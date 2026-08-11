@@ -1,6 +1,6 @@
 # Carbone In-Template Options — `{o.}` Reference
 
-Read this file when the user asks about in-template options (`{o.}` tags): timezone, language/locale, converter settings, complement data, hard refresh, pre-release feature flags, or any `{o.}` option.
+Read this file when the user asks about in-template options (`{o.}` tags): timezone, language/locale, converter settings, complement data, hard refresh, pre-release feature flags (`preReleaseFeatureIn` version codes, v4 compatibility mode, disabling the missing `[i+1]` error in v5), or any `{o.}` option.
 
 In-template options are placed anywhere in the template — they are removed from output and apply globally to the render.
 
@@ -8,11 +8,27 @@ In-template options are placed anywhere in the template — they are removed fro
 |---|---|
 | `{o.useHighPrecisionArithmetic=true}` | Enables arbitrary-precision decimal arithmetic (v4.22.4+) |
 | `{o.hardRefresh=true}` | Forces converter processing even when input and output format are the same — useful to refresh XLSX formulas after data injection (v5.4.4+) |
-| `{o.preReleaseFeatureIn=VERSION}` | Activates a pre-release feature by version number (e.g. `5002000`) |
+| `{o.preReleaseFeatureIn=VERSION}` | Activates pre-release features up to the given version code (e.g. `5011000`) — see the section below |
 | `{o.timezone=Europe/Paris}` | Forces the timezone used by date formatters; overrides the API option (v5.4.3+) |
 | `{o.lang=en-US}` | Forces the language/locale; overrides the API option. Accepts upper or lowercase (v5.4.3+) |
 | `{o.converter=L}` | Forces the document converter: `L` = LibreOffice, `O` = OnlyOffice, `C` = Chrome (v5.4.3+) |
 | `{o.exportFormattedValuesAsText=true}` | Forces `:formatN` to output localized text strings instead of native XLSX number format. **XLSX templates only** (v5.4.3+) |
-| `{o.preReleaseFeatureIn=4025011}` | Activates **all** v4 pre-release features up to v4.25.11 — use when you need any v4 pre-release feature without specifying the exact version code |
-| `{o.preReleaseFeatureIn=5004002}` | Enables fix for combining direct object access with object iteration on the same object (v5.4.2, opt-in only) |
 | `{o.styleSource=templateOrVersionId}` | Apply style from another DOCX/ODT template to a Markdown template. The style template can itself contain Carbone tags. Styles applied: headings, tables, headers, footers. Effective only when converting Markdown to DOCX, ODT, or PDF (v5.8.0+) |
+
+---
+
+## How `{o.preReleaseFeatureIn=VERSION}` works
+
+`VERSION` is a version code — major, minor and patch on 3 digits each: v5.11.0 → `5011000`, v4.22.11 → `4022011`.
+
+It is a **threshold**: everything introduced up to that version is enabled, everything above it stays off — so set the highest version you need. It can be written in the template, passed in the API render options, or set globally on-premise with `CARBONE_PRE_RELEASE_FEATURE_IN`.
+
+| Value | Enables |
+|---|---|
+| `4022011` | v4 `:set`, `:transform`, whitespace in JSON key names |
+| `4025011` | All v4 pre-release features up to v4.25.11 |
+| `5002000` | `:html` headings `<h1>`–`<h6>`, tables, `break-before` / `break-after` page breaks |
+| `5004002` | Direct object access combined with object iteration on the same object |
+| `5011000` | The `:html` rich elements and parser fixes of v5.11.0 and v5.13.0 (list → `advanced-features.md`) |
+
+**Below `5000000` = v4 compatibility (v5.13.0+)**: any value under `5000000` also turns off v5's missing-`[i+1]` detection, so legacy templates that v4 tolerated still render. It disables every v5 feature at the same time — use it to unblock a migration, not as a permanent setting (→ `upgrade-guide.md`).

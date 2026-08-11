@@ -1,6 +1,6 @@
 # Carbone Markdown Templates Reference
 
-Read this file when the user asks about Markdown templates, loops in Markdown tables, converting Markdown to PDF/DOCX/ODT, or Markdown template limitations.
+Read this file when the user asks about Markdown templates, loops in Markdown tables, barcodes or charts in Markdown, converting Markdown to PDF/DOCX/ODT, or Markdown template limitations.
 
 Version: 5.0+ | Free feature
 Output formats: PDF, DOCX, ODT, PNG, JPG, MD
@@ -17,6 +17,8 @@ Markdown templates support substitutions, repetitions, formatters, translations,
   - [Conditional sections — `:hideBegin` / `:hideEnd`](#conditional-sections--hidebegin--hideend)
   - [`:drop` / `:keep` via HTML blocks](#drop--keep-via-html-blocks)
 - [Pictures](#pictures)
+- [Barcodes](#barcodes-enterprise-v5130)
+- [Charts](#charts-enterprise-v5130)
 - [Hyperlinks](#hyperlinks)
 - [Formatters](#formatters-same-as-all-other-formats)
 - [i18n / Translations](#i18n--translations)
@@ -102,6 +104,36 @@ Use standard Markdown image syntax with a Carbone tag as the `src`. Supports abs
 ![Profile]({d.user.profilePictureBase64})
 ```
 
+Markdown image syntax has no size attributes — use a raw HTML `<img>` tag when you need to control the rendered dimensions:
+```markdown
+<img src="{d.imageUrl}" width="200" alt="Profile"/>
+```
+
+---
+
+## Barcodes (ENTERPRISE, v5.13.0+)
+
+Use the `:barcode(type)` formatter in the `src` of an `<img>` tag — no placeholder image needed, same as HTML templates:
+
+```markdown
+<img src="{d.productCode:barcode(qrcode)}" width="150" height="150" alt="Product QR code"/>
+<img src="{d.productCode:barcode(ean13, width:200, height:100)}" alt="Barcode"/>
+```
+
+The barcode's own `width`/`height` options set the size of the generated image; the `<img>` attributes set the size it occupies in the converted PDF/DOCX/ODT.
+
+---
+
+## Charts (ENTERPRISE, v5.13.0+)
+
+Use the `:chart` formatter in the `src` of an `<img>` tag. The JSON must hold a full ECharts v5 config (`type: "echarts@v5a"`, `width`, `height`, `option`) — see `advanced-features.md` "Native Charts":
+
+```markdown
+<img src="{d.chartOptions:chart}" width="600" height="400" alt="Sales Overview"/>
+```
+
+The ECharts `width`/`height` define the generated image; the `<img>` attributes define the size injected in the converted PDF/DOCX/ODT.
+
 ---
 
 ## Hyperlinks
@@ -129,6 +161,11 @@ Order date: {d.orderDate:formatD('DD/MM/YYYY')}
 Delivery: {d.deliveryDate:formatD('dddd DD MMMM YYYY')}
 Quantity: {d.quantity:formatN(2)}
 Price: {d.price:formatC(2,'EUR')}
+```
+
+`:html` also works — it injects rich HTML stored in the dataset as native formatting (→ `advanced-features.md` "`:html` Formatter — Full Reference"):
+```markdown
+{d.richContent:html}
 ```
 
 ---
@@ -165,11 +202,9 @@ To escape: break the tag syntax — `<!-- d.user.name -->`.
 | Feature | Status |
 |---|---|
 | `:drop` / `:keep` via HTML blocks | ⚠️ Coming soon |
-| Custom CSS styling | ⚠️ Coming soon |
-| Dynamic barcodes | ⚠️ Coming soon |
-| Inject HTML in Markdown (`:html`) | ⚠️ Coming soon |
 | Page breaks | ⚠️ Coming soon |
 | Table of Contents | ⚠️ Coming soon |
+| Custom CSS stylesheet for the whole template | ⚠️ Not supported — inline `style` on a raw HTML element (`<span>`, `<div>`) works; for document-wide styling use `{o.styleSource=templateOrVersionId}` or an HTML template |
 | PDF conversion options (paper size, margins, headers, footers) | ⚠️ Not supported — use HTML templates instead |
 
 ---

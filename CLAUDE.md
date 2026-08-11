@@ -5,7 +5,7 @@
 ### Content quality
 - [ ] Are the "Read this file when…" trigger lines on every reference file accurate and up to date?
 - [ ] Is the skill optimised for AI agents? Concretely: no invented syntax (every formatter shown appears in `references/formatters.md`); anti-hallucination guard present in `SKILL.md`; no `{{` Mustache braces; no smart quotes (`'` / `'` / `"` / `"`); all examples conform to `SKILL.md` §10 Validation Checklist; trigger phrasing unambiguous
-- [ ] Does the skill follow the latest Claude Code skill specification? (frontmatter fields, line count, description+when_to_use char budget)
+- [ ] Does the skill follow the latest Claude Code skill specification? `SKILL.md` under 500 lines; `description` under the 1,536-char skill-listing cap (trigger phrases live inside `description` — `when_to_use` was merged into it in v1.6.0 so the frontmatter stays close to the six-field Agent Skills spec)
 
 ### Cross-file consistency
 - [ ] Same claim, same value across files — version requirements (v3/v4/v5), format-support lists (DOCX/XLSX/ODT/…), formatter element/scope tables (`:drop`/`:keep`, `:color`, `:html` compat), deprecation labels, pre-release flags (`{o.preReleaseFeatureIn=...}`) agree across `SKILL.md` and every reference file
