@@ -7,12 +7,12 @@
   },
   "metadata": {
     "description": "Official Carbone skill — complete templating language reference covering tags, loops, conditions, formatters, aggregators, PDF form filling (AcroForm), format support and conversion, and all template formats (DOCX, XLSX, PPTX, ODT, HTML, Markdown, PDF, CSV, TXT, SVG, IDML)",
-    "version": "1.6.0"
+    "version": "1.6.1"
   },
   "plugins": [
     {
       "name": "carbone",
-      "version": "1.6.0",
+      "version": "1.6.1",
       "description": "Enables AI to build fully-featured Carbone templates using verified syntax: tags, loops, conditions, formatters, PDF form filling (AcroForm), HTML/Markdown output, and embedding tags into AI-generated DOCX, XLSX, PPTX, ODT, HTML, Markdown, and PDF files.",
       "category": "productivity",
       "homepage": "https://carbone.io",

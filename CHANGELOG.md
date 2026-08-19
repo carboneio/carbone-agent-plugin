@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.1
+- Updated for Carbone v5.14.0 (tracked version 5.13.0 → 5.14.0)
+- `in-template-options.md`: the `{o.converter=...}` row now names Chromium correctly and adds the v5.14.0 engine `I` (Carbone ICE, DOCX to PDF only) — the four accepted values are `L`, `O`, `C` and `I`
+- `in-template-options.md` intro: an in-template option takes precedence over the same option in the API call, works in headers, footers and spreadsheet cells, ignores whitespace inside the tag, and an unknown option name is removed silently with no error — a misspelled or invented `{o.}` option just does nothing
+- No templating changes in v5.13.1 (Chrome converter concurrency fix, job balancer hardening) or v5.14.0 (Carbone ICE converter, Node 24, `GET /templates` 400 on malformed URI, batch report filenames, Studio converter reset, `:html` DOCX list-rendering optimisation). Converter engine behaviour, performance and limitations stay out of the skill — they are runtime/API concerns, not template design
+
 ## 1.6.0
 - Updated for Carbone v5.13.0 (tracked version 5.9.1 → 5.13.0)
 - Frontmatter: `when_to_use` merged into `description` — the two were already concatenated in the skill listing, and the merge keeps the frontmatter closer to the six-field Agent Skills spec for non-Claude-Code distribution

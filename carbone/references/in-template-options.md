@@ -2,7 +2,7 @@
 
 Read this file when the user asks about in-template options (`{o.}` tags): timezone, language/locale, converter settings, complement data, hard refresh, pre-release feature flags (`preReleaseFeatureIn` version codes, v4 compatibility mode, disabling the missing `[i+1]` error in v5), or any `{o.}` option.
 
-In-template options are placed anywhere in the template — they are removed from output and apply globally to the render.
+In-template options are placed anywhere in the template — body, header, footer or a spreadsheet cell. They are removed from output and apply globally to the render, and **take precedence over the same option passed in the API call**. Whitespace inside the tag is ignored. An option name Carbone does not know is removed silently, with no error — so a misspelled or invented `{o.}` option simply does nothing.
 
 | Option | Description |
 |---|---|
@@ -11,7 +11,7 @@ In-template options are placed anywhere in the template — they are removed fro
 | `{o.preReleaseFeatureIn=VERSION}` | Activates pre-release features up to the given version code (e.g. `5011000`) — see the section below |
 | `{o.timezone=Europe/Paris}` | Forces the timezone used by date formatters; overrides the API option (v5.4.3+) |
 | `{o.lang=en-US}` | Forces the language/locale; overrides the API option. Accepts upper or lowercase (v5.4.3+) |
-| `{o.converter=L}` | Forces the document converter: `L` = LibreOffice, `O` = OnlyOffice, `C` = Chrome (v5.4.3+) |
+| `{o.converter=L}` | Forces the conversion engine: `L` = LibreOffice, `O` = OnlyOffice, `C` = Chromium, `I` = Carbone ICE (DOCX to PDF only, v5.14.0+). Only these four values are accepted (v5.4.3+) |
 | `{o.exportFormattedValuesAsText=true}` | Forces `:formatN` to output localized text strings instead of native XLSX number format. **XLSX templates only** (v5.4.3+) |
 | `{o.styleSource=templateOrVersionId}` | Apply style from another DOCX/ODT template to a Markdown template. The style template can itself contain Carbone tags. Styles applied: headings, tables, headers, footers. Effective only when converting Markdown to DOCX, ODT, or PDF (v5.8.0+) |
 
