@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Builds the release artifacts into dist/:
-//   dist/carbone.skill              the skills/carbone folder, its contents at the archive root
+//   dist/carbone.skill              the skills/carbone folder as a top-level carbone/ folder, since
+//                                   claude.ai looks for <skill-name>/SKILL.md inside the archive
 //   dist/carbone-chatgpt-plugin.zip plugin.json, mcp.json, assets/, skills/ at the archive root,
 //                                   with the ChatGPT auth block added to the zipped mcp.json only
 // Only files git would ship (tracked + untracked-not-ignored) are included; hidden files never are.
@@ -15,6 +16,7 @@ import { ROOT, isHidden, listRepoFiles } from './lib.mjs';
 
 const DIST = path.join(ROOT, 'dist');
 const SKILL_DIR = 'skills/carbone';
+const SKILL_NAME = path.posix.basename(SKILL_DIR); // the top-level folder in carbone.skill
 const CHATGPT_ROOT_FILES = ['plugin.json', 'mcp.json'];
 const CHATGPT_DIRS = ['assets/', 'skills/'];
 const OPENAI_AUTH = { 'com.openai': { auth: { type: 'oauth' } } };
@@ -23,10 +25,11 @@ const files = listRepoFiles().filter((f) => !isHidden(f));
 mkdirSync(DIST, { recursive: true });
 
 // carbone.skill ------------------------------------------------------------------------------
-const skillFiles = files.filter((f) => f.startsWith(`${SKILL_DIR}/`)).map((f) => path.posix.relative(SKILL_DIR, f));
-if (!skillFiles.includes('SKILL.md')) fail(`${SKILL_DIR}/SKILL.md not found`);
+// Zipped from skills/, so every entry starts with carbone/.
+const skillFiles = files.filter((f) => f.startsWith(`${SKILL_DIR}/`)).map((f) => path.posix.relative(path.posix.dirname(SKILL_DIR), f));
+if (!skillFiles.includes(`${SKILL_NAME}/SKILL.md`)) fail(`${SKILL_DIR}/SKILL.md not found`);
 const skillZip = path.join(DIST, 'carbone.skill');
-zip(path.join(ROOT, SKILL_DIR), skillZip, skillFiles);
+zip(path.join(ROOT, path.dirname(SKILL_DIR)), skillZip, skillFiles);
 
 // carbone-chatgpt-plugin.zip -----------------------------------------------------------------
 const pluginFiles = files.filter((f) => CHATGPT_ROOT_FILES.includes(f) || CHATGPT_DIRS.some((d) => f.startsWith(d)));
@@ -53,6 +56,11 @@ for (const [archive, expected] of [
   const bad = entries.filter((e) => isHidden(e) || e.split('/').includes('__MACOSX') || e === 'package.json' || e.endsWith('/'));
   if (bad.length) fail(`${path.basename(archive)} has unexpected entries: ${bad.join(', ')}`);
   if (!isDeepStrictEqual([...entries].sort(), [...expected].sort())) fail(`${path.basename(archive)}: entries differ from the file list`);
+  if (archive === skillZip) {
+    const outside = entries.filter((e) => !e.startsWith(`${SKILL_NAME}/`));
+    if (outside.length) fail(`carbone.skill: entries outside ${SKILL_NAME}/: ${outside.join(', ')}`);
+    if (!entries.includes(`${SKILL_NAME}/SKILL.md`)) fail(`carbone.skill: no ${SKILL_NAME}/SKILL.md`);
+  }
   console.log(`${path.relative(ROOT, archive)}: ${entries.length} files`);
   for (const e of entries) console.log(`  ${e}`);
 }
