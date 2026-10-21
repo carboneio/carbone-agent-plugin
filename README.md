@@ -1,84 +1,13 @@
-# Carbone Skill — Official Carbone Templating Syntax for AI Assistants
+# Carbone agent plugin
 
-Teaches AI assistants the Carbone Universal Templating Language — so they can design templates from scratch or embed Carbone tags into generated DOCX, XLSX, and PPTX files.
+The Carbone agent plugin: the Carbone skill and MCP server for any AI agent that supports skills or remote MCP servers, including Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI and Antigravity. Install it once in your AI assistant to design document templates and generate PDF, Word, Excel and PowerPoint documents from your data in the same conversation.
 
-## Compatibility
+## What it does
 
-Works with any platform that supports the open [Agent Skills](https://agentskills.io) standard:
+- **The Carbone MCP server** (`https://mcp.carbone.io`) generates documents from your templates and data, converts files between formats, and manages your Carbone template library. It is hosted by Carbone, so there is nothing to run locally. Documentation: [carbone.io/documentation/developer/ai/mcp.html](https://carbone.io/documentation/developer/ai/mcp.html).
+- **The Carbone skill** (`skills/carbone/`) teaches the assistant the Carbone templating syntax, so it can write, check and fix templates, or add Carbone tags to the DOCX, XLSX and PPTX files it generates. It follows the open [Agent Skills](https://agentskills.io) standard and works without the server.
 
-| Platform | Instructions |
-|---|---|
-| Claude (claude.ai) | [docs.claude.com](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) |
-| Claude Code | [code.claude.com](https://code.claude.com/docs/en/skills) |
-| ChatGPT | [developers.openai.com](https://developers.openai.com/codex/skills/) |
-| Cursor | [cursor.com/docs](https://cursor.com/docs/context/skills) |
-| VS Code (GitHub Copilot) | [code.visualstudio.com](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
-| Gemini CLI | [geminicli.com/docs](https://geminicli.com/docs/cli/skills/) |
-| OpenAI Codex | [developers.openai.com](https://developers.openai.com/codex/skills/) |
-| All other platforms | [agentskills.io](https://agentskills.io/home) |
-
-## Download
-
-**[carbone.skill](https://github.com/carboneio/carbone-skill/releases/latest/download/carbone.skill)** — latest release
-
-## Installation
-
-### Claude.ai
-
-1. Go to **Customize → Skills** (at claude.ai/customize/skills)
-2. Click **+** → **Upload a skill** and upload `carbone.skill`
-
-### Claude Code
-
-Register the repository as a plugin marketplace:
-
-```
-/plugin marketplace add carboneio/carbone-skill
-```
-
-Then install the skill:
-
-```
-/plugin install carbone@carbone-skill
-```
-
-Or install manually by extracting `carbone.skill`:
-
-```bash
-unzip carbone.skill -d ~/.claude/skills/carbone
-```
-
-### Cursor
-
-See [cursor.com/docs/context/skills](https://cursor.com/docs/context/skills) for the exact install path.
-
-### VS Code (GitHub Copilot)
-
-```bash
-unzip carbone.skill -d ~/.copilot/skills/carbone
-```
-
-### Gemini CLI
-
-```bash
-gemini skills install carbone.skill
-```
-
-### OpenAI Codex
-
-```bash
-unzip carbone.skill -d ~/.agents/skills/carbone
-```
-
-### Other platforms
-
-See [agentskills.io](https://agentskills.io/home) for platform-specific instructions.
-
-## Used with Carbone MCP
-
-The Carbone Skill pairs with the [Carbone MCP server](https://carbone.io/documentation/developer/ai/mcp.html). The skill gives the AI assistant deep knowledge of Carbone's templating syntax, while the MCP server provides direct API access to render documents. Together, they let you design templates and generate documents in a single conversation: the skill handles syntax correctness, the MCP handles API actions.
-
-## What the skill covers
+### What the skill covers
 
 - Tag syntax: `{d.}`, `{c.}`, aliases, i18n, in-template options
 - Formatters: date, number, string, currency, and chaining
@@ -89,21 +18,178 @@ The Carbone Skill pairs with the [Carbone MCP server](https://carbone.io/documen
 - Markdown templates: loops in tables, converting to DOCX/PDF
 - Embedding Carbone tags into AI-generated DOCX, XLSX, and PPTX files
 - Best practices and a validation checklist
-- Template formats: `XML` `HTML` `ODT` `ODS` `ODP` `DOCX` `XLSX` `PPTX` `ODG` `SVG` `MD` `IDML` — and `PDF` form templates
+- Template formats: `XML` `HTML` `ODT` `ODS` `ODP` `DOCX` `XLSX` `PPTX` `ODG` `SVG` `MD` `IDML`, and `PDF` form templates
 - Export formats: `PDF` `DOCX` `XLSX` `PPTX` `ODT` `ODS` `ODP` `HTML` `CSV` `TXT` `JPG` `PNG` `GIF` `SVG` `WEBP` `EPUB` `MD` `RTF` (160+ conversions)
 
-## How to update
+## Install
 
-Re-download the latest release when Carbone ships major updates:
+| Assistant | Install |
+|---|---|
+| ChatGPT | Plugins directory: search for Carbone |
+| Claude (claude.ai, Desktop, Cowork) | Directory: Carbone (connector and plugin) |
+| Claude Code | `/plugin marketplace add carboneio/carbone-agent-plugin`, then `/plugin install carbone@carbone` |
+| Codex | `codex plugin marketplace add carboneio/carbone-agent-plugin` |
+| Cursor | Marketplace: Carbone |
+| VS Code, GitHub Copilot | `copilot plugin install carboneio/carbone-agent-plugin`, or **Chat: Install Plugin From Source** |
+| Gemini CLI | `gemini extensions install https://github.com/carboneio/carbone-agent-plugin` |
+| Antigravity | `agy plugin install https://github.com/carboneio/carbone-agent-plugin` |
+| Mistral Le Chat, others | Add the MCP server `https://mcp.carbone.io` as a custom connector |
+| Skill only | `npx skills add carboneio/carbone-agent-plugin`, or upload `carbone.skill` |
 
-**[Latest release](https://github.com/carboneio/carbone-skill/releases/latest)**
+The skill file is attached to every release: **[carbone.skill](https://github.com/carboneio/carbone-agent-plugin/releases/latest/download/carbone.skill)**.
 
-Changelog: [carbone.io/changelog.html](https://carbone.io/changelog.html)
+### ChatGPT
 
-## Contributing
+Open the Plugins directory, search for **Carbone** and add it. The same listing covers Codex.
 
-Spotted an error or missing formatter? See [CONTRIBUTING.md](CONTRIBUTING.md).
+### Claude (claude.ai, Desktop, Cowork)
+
+Open the Directory, search for **Carbone** and add it. The connector and the plugin use the same server, so you see one set of tools. In claude.ai, the plugin's MCP server appears in its Connectors tab, where you connect it.
+
+<details>
+<summary>Manual setup</summary>
+
+- **Server only**: add a custom connector with the URL `https://mcp.carbone.io`.
+- **Skill only**: go to **Customize**, **Skills** (claude.ai/customize/skills), click **+**, then **Upload a skill**, and upload `carbone.skill`.
+
+</details>
+
+### Claude Code
+
+```
+/plugin marketplace add carboneio/carbone-agent-plugin
+/plugin install carbone@carbone
+```
+
+Then run `/mcp`, choose **Authenticate** for Carbone, and sign in.
+
+<details>
+<summary>Manual setup</summary>
+
+Server only: add this to a `.mcp.json` file at the root of your project.
+
+```json
+{ "mcpServers": { "carbone": { "type": "http", "url": "https://mcp.carbone.io" } } }
+```
+
+Skill only: extract `carbone.skill` into your skills folder.
+
+```bash
+unzip carbone.skill -d ~/.claude/skills/carbone
+```
+
+</details>
+
+### Codex
+
+Codex uses the ChatGPT plugin catalog, so Carbone is listed there. To install from this repository instead:
+
+```bash
+codex plugin marketplace add carboneio/carbone-agent-plugin
+```
+
+Then install Carbone from the Plugins Directory.
+
+<details>
+<summary>Manual setup</summary>
+
+Skill only: extract `carbone.skill` into your skills folder.
+
+```bash
+unzip carbone.skill -d ~/.agents/skills/carbone
+```
+
+</details>
+
+### Cursor
+
+Open the Marketplace, search for **Carbone** and install it.
+
+<details>
+<summary>Manual setup</summary>
+
+Copy this repository to `~/.cursor/plugins/local/carbone`, then restart Cursor. The skill and the Carbone server appear in Cursor.
+
+</details>
+
+### VS Code, GitHub Copilot
+
+Copilot CLI:
+
+```bash
+copilot plugin install carboneio/carbone-agent-plugin
+```
+
+VS Code: enable the `chat.plugins.enabled` setting, then run **Chat: Install Plugin From Source** with the repository URL `https://github.com/carboneio/carbone-agent-plugin`.
+
+<details>
+<summary>Manual setup</summary>
+
+Skill only: extract `carbone.skill` into your skills folder.
+
+```bash
+unzip carbone.skill -d ~/.copilot/skills/carbone
+```
+
+</details>
+
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/carboneio/carbone-agent-plugin
+```
+
+Restart Gemini CLI. Sign-in starts in your browser the first time Carbone is called; if it doesn't, run `/mcp auth carbone`. Sign-in needs a browser, so it doesn't work over SSH.
+
+<details>
+<summary>Manual setup</summary>
+
+Skill only:
+
+```bash
+gemini skills install carbone.skill
+```
+
+</details>
+
+### Antigravity
+
+```bash
+agy plugin install https://github.com/carboneio/carbone-agent-plugin
+```
+
+Then open **Agent settings**, **Customizations**, and choose **Authenticate** for Carbone. Sign-in asks you to copy and paste an authorization code.
+
+### Mistral Le Chat and other assistants
+
+Add the MCP server `https://mcp.carbone.io` as a custom connector. In Le Chat, an admin adds the URL. Any assistant that supports remote MCP servers with OAuth can connect the same way.
+
+For the skill alone on other platforms, see [agentskills.io](https://agentskills.io/home).
+
+## Sign in
+
+You sign in with your Carbone account when the assistant first calls Carbone. No account yet? Create one at [carbone.io](https://carbone.io).
+
+## What data it sends
+
+- Templates and data go to the Carbone API only when a tool is called.
+- Generated documents are returned to the assistant.
+- The skill is a set of instructions read by the assistant. It sends nothing on its own.
+
+Read the [privacy policy](https://carbone.io/company/privacy-policy.html).
+
+## Files in and out
+
+- Templates and data are passed as public links, as text, or from your template library.
+- The hosted server can't read local files.
+
+## Support
+
+- Help center: [help.carbone.io](https://help.carbone.io)
+- Email: [support@carbone.io](mailto:support@carbone.io)
+- Carbone changelog: [carbone.io/changelog.html](https://carbone.io/changelog.html)
+- Spotted an error or missing formatter in the skill? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-Apache-2.0
+Apache-2.0. See [LICENSE](LICENSE).

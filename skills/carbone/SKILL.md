@@ -1,7 +1,7 @@
 ---
 name: carbone
 description: >
-  Carbone templating — merge JSON data into a DOCX (Word), XLSX (Excel), PPTX (PowerPoint), ODT, ODS,
+  Carbone templating: merge JSON data into a DOCX (Word), XLSX (Excel), PPTX (PowerPoint), ODT, ODS,
   HTML, Markdown or PDF template, plus text/XML formats such as CSV, TXT, SVG and IDML. Use this skill
   to design, validate, fix or explain Carbone syntax: tags, loops, conditions, formatters, aggregators,
   aliases, and mapping a JSON dataset onto a template. Trigger on: the tag syntax {d.} {c.} {#alias}
@@ -9,15 +9,13 @@ description: >
   format supports a feature or what it converts to; filling a PDF form (AcroForm); adding a chart,
   barcode or dynamic image to a document; dynamic Excel formulas; upgrading between Carbone versions;
   and any request to build an invoice, contract or report from JSON, mail-merge data into a document,
-  fill a template with data, or convert a document (HTML or Markdown to PDF, DOCX to PDF) — even when
-  Carbone is not named.
-user-invocable: true
+  fill a template with data, or convert a document (HTML or Markdown to PDF, DOCX to PDF).
 license: Apache-2.0
 metadata:
   author: carboneio
-  version: "1.6.1"
+  version: "2.0.0"
   carbone_version: "5.14.0"
-  repository: https://github.com/carboneio/carbone-skill
+  repository: https://github.com/carboneio/carbone-agent-plugin
 ---
 
 # Carbone Universal Templating Language — Skill

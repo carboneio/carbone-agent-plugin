@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+- The Carbone plugin now bundles the skill and the hosted Carbone MCP server, for any AI agent, including Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI and Antigravity
+- The repository is renamed carbone-agent-plugin
+- The skill moved to `skills/carbone/`, and its front matter follows the Agent Skills spec
+- The plugin and its marketplace are named `carbone`, so the Claude Code install command is now `/plugin install carbone@carbone`
+
 ## 1.6.1
 - Updated for Carbone v5.14.0 (tracked version 5.13.0 → 5.14.0)
 - `in-template-options.md`: the `{o.converter=...}` row now names Chromium correctly and adds the v5.14.0 engine `I` (Carbone ICE, DOCX to PDF only) — the four accepted values are `L`, `O`, `C` and `I`

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design a document template"
+  short_description: "Turn a Word, Excel, PowerPoint or PDF file into a template for your data."
+  default_prompt: "Create an invoice template with line items, VAT and a total."

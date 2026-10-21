@@ -6,7 +6,7 @@ labels: documentation
 
 **File**
 
-Which file contains the error? (e.g. `carbone/references/formatters.md`)
+Which file contains the error? (e.g. `skills/carbone/references/formatters.md`)
 
 **Current documentation**
 

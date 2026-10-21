@@ -10,7 +10,7 @@ Name the formatter, tag, option, or feature that is not covered.
 
 **Where it should be added**
 
-Which file should it go in? (e.g. `carbone/references/formatters.md`)
+Which file should it go in? (e.g. `skills/carbone/references/formatters.md`)
 
 **Reference**
 

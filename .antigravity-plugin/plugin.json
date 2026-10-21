@@ -1,0 +1,34 @@
+{
+  "name": "carbone",
+  "displayName": "Carbone",
+  "version": "2.0.0",
+  "description": "Design Carbone templates in Word, Excel, PowerPoint, HTML or Markdown and generate documents from JSON data without leaving your editor, from a single PDF to large batches. One universal templating language with loops, conditions, charts and barcodes, a high-performance engine built for production, and 100+ formats. Bundles the Carbone skill and the hosted Carbone MCP server.",
+  "author": {
+    "name": "Carbone",
+    "email": "support@carbone.io",
+    "url": "https://carbone.io"
+  },
+  "homepage": "https://carbone.io/documentation/developer/ai/mcp.html",
+  "repository": "https://github.com/carboneio/carbone-agent-plugin",
+  "license": "Apache-2.0",
+  "logo": "assets/icon.svg",
+  "category": "Productivity",
+  "keywords": [
+    "carbone",
+    "pdf-generation",
+    "document-generation",
+    "docx-template",
+    "json-to-pdf",
+    "html-to-pdf",
+    "markdown-to-pdf",
+    "docx",
+    "xlsx",
+    "pptx"
+  ],
+  "mcpServers": "./mcp_config.json",
+  "suggestedPrompts": [
+    "Use Carbone to design an invoice template and generate a sample PDF.",
+    "Use Carbone to list my templates and the data each one expects.",
+    "What kinds of documents can Carbone generate for me?"
+  ]
+}

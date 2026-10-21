@@ -8,3 +8,7 @@ draft-real-world-patterns*.md
 *.py
 .claude/
 draft*.md
+# Build output (scripts/build-zips.mjs)
+dist/
+# Internal planning, never commit
+AGENT_PLUGIN_PLAN.md

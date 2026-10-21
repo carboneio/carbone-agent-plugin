@@ -1,0 +1,13 @@
+{
+  "name": "carbone",
+  "version": "2.0.0",
+  "description": "Design Carbone templates in Word, Excel, PowerPoint, HTML or Markdown and generate documents from JSON data without leaving your terminal, from a single PDF to large batches. One universal templating language with loops, conditions, charts and barcodes, a high-performance engine built for production, and 100+ formats. Bundles the Carbone skill and the hosted Carbone MCP server.",
+  "mcpServers": {
+    "carbone": {
+      "httpUrl": "https://mcp.carbone.io",
+      "oauth": {
+        "enabled": true
+      }
+    }
+  }
+}
