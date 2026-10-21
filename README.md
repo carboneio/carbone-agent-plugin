@@ -166,23 +166,6 @@ Add the MCP server `https://mcp.carbone.io` as a custom connector. In Le Chat, a
 
 For the skill alone on other platforms, see [agentskills.io](https://agentskills.io/home).
 
-## Sign in
-
-You sign in with your Carbone account when the assistant first calls Carbone. No account yet? Create one at [carbone.io](https://carbone.io).
-
-## What data it sends
-
-- Templates and data go to the Carbone API only when a tool is called.
-- Generated documents are returned to the assistant.
-- The skill is a set of instructions read by the assistant. It sends nothing on its own.
-
-Read the [privacy policy](https://carbone.io/company/privacy-policy.html).
-
-## Files in and out
-
-- Templates and data are passed as public links, as text, or from your template library.
-- The hosted server can't read local files.
-
 ## Support
 
 - Help center: [help.carbone.io](https://help.carbone.io)
