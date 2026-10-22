@@ -37,7 +37,7 @@ const KIB = 1024;
 const MAX_FILE_BYTES = 256 * KIB;
 const MAX_FILES = 512;
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.bmp', '.avif']);
-const SKILL_KEYS = ['name', 'description', 'license', 'compatibility', 'metadata', 'allowed-tools'];
+const FRONT_MATTER_FIELDS = ['name', 'description', 'license', 'compatibility', 'metadata', 'allowed-tools'];
 
 const rel = (p) => path.join(ROOT, p);
 const read = (p) => readFileSync(rel(p), 'utf8');
@@ -69,11 +69,11 @@ async function check(title, fn) {
   for (const e of errors) console.log(`   x   ${e}`);
 }
 
-function get(obj, keyPath, fail, label) {
+function get(obj, fieldPath, fail, label) {
   let cur = obj;
-  for (const k of keyPath) {
+  for (const k of fieldPath) {
     if (cur == null || typeof cur !== 'object' || !Object.hasOwn(cur, k)) {
-      fail(`${label}: missing key path ${keyPath.map((x) => JSON.stringify(x)).join(' > ')}`);
+      fail(`${label}: missing key path ${fieldPath.map((x) => JSON.stringify(x)).join(' > ')}`);
       return undefined;
     }
     cur = cur[k];
@@ -177,12 +177,12 @@ await check('3. One shared version in every manifest and SKILL.md', ({ fail, not
 // ---------------------------------------------------------------------------------------------
 await check(`4. The MCP server is "carbone" at exactly ${MCP_URL} in every MCP file`, ({ fail, note }) => {
   const specs = [
-    { file: 'mcp.json', urlKey: 'url', type: 'streamable-http' },
-    { file: '.mcp.json', urlKey: 'url', type: 'http' },
-    { file: 'gemini-extension.json', urlKey: 'httpUrl' },
-    { file: 'mcp_config.json', urlKey: 'serverUrl' },
+    { file: 'mcp.json', urlField: 'url', type: 'streamable-http' },
+    { file: '.mcp.json', urlField: 'url', type: 'http' },
+    { file: 'gemini-extension.json', urlField: 'httpUrl' },
+    { file: 'mcp_config.json', urlField: 'serverUrl' },
   ];
-  for (const { file, urlKey, type } of specs) {
+  for (const { file, urlField, type } of specs) {
     const servers = json[file]?.mcpServers;
     if (!servers || typeof servers !== 'object') {
       fail(`${file}: no "mcpServers" object`);
@@ -192,12 +192,12 @@ await check(`4. The MCP server is "carbone" at exactly ${MCP_URL} in every MCP f
     if (names.length !== 1 || names[0] !== 'carbone') fail(`${file}: servers are ${JSON.stringify(names)}, expected exactly ["carbone"]`);
     const s = servers.carbone;
     if (!s) continue;
-    if (s[urlKey] !== MCP_URL) fail(`${file}: mcpServers.carbone.${urlKey} is ${JSON.stringify(s[urlKey])}, expected "${MCP_URL}"`);
+    if (s[urlField] !== MCP_URL) fail(`${file}: mcpServers.carbone.${urlField} is ${JSON.stringify(s[urlField])}, expected "${MCP_URL}"`);
     for (const k of ['url', 'httpUrl', 'serverUrl'])
-      if (k !== urlKey && k in s) fail(`${file}: mcpServers.carbone has "${k}"; this client reads "${urlKey}" only`);
+      if (k !== urlField && k in s) fail(`${file}: mcpServers.carbone has "${k}"; this client reads "${urlField}" only`);
     if (type && s.type !== type) fail(`${file}: mcpServers.carbone.type is ${JSON.stringify(s.type)}, expected "${type}"`);
     for (const k of ['headers', 'command', 'args', 'env']) if (k in s) fail(`${file}: mcpServers.carbone must not have "${k}"`);
-    note(`${file}: carbone ${urlKey} = ${s[urlKey]}`);
+    note(`${file}: carbone ${urlField} = ${s[urlField]}`);
   }
   const agy = json['.antigravity-plugin/plugin.json'];
   if (agy && agy.mcpServers !== './mcp_config.json')
@@ -226,7 +226,7 @@ await check('5. Skills follow the Agent Skills spec and their reference links re
       fail(`${skillPath}: ${e.message}`);
       continue;
     }
-    for (const k of Object.keys(data)) if (!SKILL_KEYS.includes(k)) fail(`${skillPath}: front matter key "${k}" is not one of ${SKILL_KEYS.join(', ')}`);
+    for (const k of Object.keys(data)) if (!FRONT_MATTER_FIELDS.includes(k)) fail(`${skillPath}: front matter key "${k}" is not one of ${FRONT_MATTER_FIELDS.join(', ')}`);
     if (data.name !== dir) fail(`${skillPath}: name "${data.name}" does not match its folder "${dir}"`);
     if (typeof data.name !== 'string' || !/^(?!-)(?!.*--)[a-z0-9-]{1,64}(?<!-)$/.test(data.name))
       fail(`${skillPath}: name must be 1-64 lowercase letters, digits and single hyphens`);
@@ -409,11 +409,11 @@ await check('9. No forbidden content; size and file-count limits', ({ fail, note
   // Manifest keys that OpenAI or claude.ai reject.
   const cp = json['.claude-plugin/plugin.json'] ?? {};
   for (const k of ['hooks', 'userConfig']) if (k in cp) fail(`.claude-plugin/plugin.json: "${k}" is not allowed`);
-  const findKey = (o, keys, trail = []) =>
+  const findField = (o, names, trail = []) =>
     o && typeof o === 'object'
-      ? Object.entries(o).flatMap(([k, v]) => [...(keys.includes(k) ? [[...trail, k].join('.')] : []), ...findKey(v, keys, [...trail, k])])
+      ? Object.entries(o).flatMap(([k, v]) => [...(names.includes(k) ? [[...trail, k].join('.')] : []), ...findField(v, names, [...trail, k])])
       : [];
-  for (const hit of findKey(json['plugin.json'], ['apps', 'hooks', 'test_credentials', 'reviewer_instructions']))
+  for (const hit of findField(json['plugin.json'], ['apps', 'hooks', 'test_credentials', 'reviewer_instructions']))
     fail(`plugin.json: key "${hit}" is not allowed`);
 
   // Content scan for credentials and reviewer-only fields. Scope: every file that ships in a
@@ -447,11 +447,12 @@ await check('10. claude plugin validate --strict', ({ fail, note, skip }) => {
   note(`claude ${probe.stdout.trim()}`);
   // `.` validates the marketplace manifest (and the directory checks); the second run validates
   // the plugin manifest itself, which the first run does not report on when a marketplace exists.
+  // Keeps the CLI from making non-essential network calls; the child inherits the environment.
+  process.env.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = '1';
   for (const target of ['.', '.claude-plugin/plugin.json']) {
     const r = spawnSync('claude', ['plugin', 'validate', target, '--strict'], {
       cwd: ROOT,
       encoding: 'utf8',
-      env: { ...process.env, CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1' },
     });
     const out = `${r.stdout ?? ''}${r.stderr ?? ''}`.trim();
     note(`$ claude plugin validate ${target} --strict  (exit ${r.status})`);

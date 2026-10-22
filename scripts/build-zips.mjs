@@ -19,7 +19,7 @@ const SKILL_DIR = 'skills/carbone';
 const SKILL_NAME = path.posix.basename(SKILL_DIR); // the top-level folder in carbone.skill
 const CHATGPT_ROOT_FILES = ['plugin.json', 'mcp.json'];
 const CHATGPT_DIRS = ['assets/', 'skills/'];
-const OPENAI_AUTH = { 'com.openai': { auth: { type: 'oauth' } } };
+const OPENAI_EXTENSIONS = { 'com.openai': { auth: { type: 'oauth' } } };
 
 const files = listRepoFiles().filter((f) => !isHidden(f));
 mkdirSync(DIST, { recursive: true });
@@ -79,7 +79,7 @@ function withOpenAiAuth(text) {
   if (!data.mcpServers?.carbone) fail('mcp.json: no carbone server');
   if (data.mcpServers.carbone.extensions) fail('mcp.json: already has "extensions"; it must stay schema-clean in the repository');
   const expected = structuredClone(data);
-  expected.mcpServers.carbone.extensions = OPENAI_AUTH;
+  expected.mcpServers.carbone.extensions = OPENAI_EXTENSIONS;
   // Insert after the carbone server's "url" line, as in the ZIP validated by OpenAI.
   const m = /\n([ \t]+)"url"\s*:\s*"[^"]*"/.exec(text);
   if (m) {
