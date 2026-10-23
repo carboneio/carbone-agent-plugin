@@ -32,12 +32,22 @@ HTML templates support the full Carbone feature set: substitutions, loops, condi
 
 ## Basics
 
+An HTML template is a **complete document**: `<!DOCTYPE html>`, then `<html>` with its `<head>` and `<body>`. Carbone detects the template type from its content, so a fragment without `<html>` is read as XML (when it starts with a tag) or as plain text (when it starts with text), and the Chromium converter refuses to turn it into a PDF. The examples below show only the relevant part of the body.
+
 Carbone tags work anywhere inside an HTML document — in text, attributes, CSS values, `src`, `href`, `style`, etc.
 
 ```html
-<h1>Welcome, {d.user.firstName} {d.user.lastName}!</h1>
-<p>Your email: {d.user.email}</p>
-<p>Membership: {d.membershipLevel}</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome</title>
+  </head>
+  <body>
+    <h1>Welcome, {d.user.firstName} {d.user.lastName}!</h1>
+    <p>Your email: {d.user.email}</p>
+    <p>Membership: {d.membershipLevel}</p>
+  </body>
+</html>
 ```
 
 **CSS limitations:**
@@ -56,15 +66,22 @@ Carbone tags work anywhere inside an HTML document — in text, attributes, CSS 
 Use `[i]` / `[i+1]` as usual. The `[i+1]` row is removed from output. Works in `<tr>`, `<li>`, `<div>`, or any repeating block.
 
 ```html
-<tbody>
-  <tr>
-    <td>{d.users[i].id}</td>
-    <td>{d.users[i].name}</td>
-    <td>{d.users[i].role}</td>
-  </tr>
-  <!-- end-of-loop row (removed from output) -->
-  <tr><td>{d.users[i+1]}</td></tr>
-</tbody>
+<!DOCTYPE html>
+<html>
+  <body>
+    <table>
+      <tbody>
+        <tr>
+          <td>{d.users[i].id}</td>
+          <td>{d.users[i].name}</td>
+          <td>{d.users[i].role}</td>
+        </tr>
+        <!-- end-of-loop row (removed from output) -->
+        <tr><td>{d.users[i+1]}</td></tr>
+      </tbody>
+    </table>
+  </body>
+</html>
 ```
 
 ---

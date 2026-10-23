@@ -13,6 +13,7 @@ import path from 'node:path';
 import {
   MARKETPLACE_FILES,
   MCP_URL,
+  MICROSOFT_JSON_FILES,
   ROOT,
   SEMVER_RE,
   SKILL_MD,
@@ -99,6 +100,7 @@ await check('1. Every JSON manifest parses', ({ fail, note }) => {
     'gemini-extension.json',
     ...VERSION_JSON_FILES,
     ...MARKETPLACE_FILES,
+    ...MICROSOFT_JSON_FILES,
   ];
   for (const f of new Set(required)) if (!jsonFiles.includes(f)) fail(`${f}: missing (or ignored by git)`);
   note(`${jsonFiles.length} JSON files parsed`);
@@ -204,6 +206,19 @@ await check(`4. The MCP server is "carbone" at exactly ${MCP_URL} in every MCP f
     fail(`.antigravity-plugin/plugin.json: "mcpServers" is ${JSON.stringify(agy.mcpServers)}, expected "./mcp_config.json"`);
   if (json['.claude-plugin/plugin.json'] && 'mcpServers' in json['.claude-plugin/plugin.json'])
     fail('.claude-plugin/plugin.json: must not declare "mcpServers" (the server is read from .mcp.json)');
+
+  // Microsoft 365 Copilot plugin manifest: one RemoteMCPServer runtime pointing at the server.
+  const msPlugin = 'microsoft/appPackage/ai-plugin.json';
+  const runtimes = json[msPlugin]?.runtimes;
+  if (!Array.isArray(runtimes)) fail(`${msPlugin}: no "runtimes" array`);
+  else {
+    const mcp = runtimes.filter((r) => r?.type === 'RemoteMCPServer');
+    if (mcp.length !== 1) fail(`${msPlugin}: ${mcp.length} RemoteMCPServer runtimes, expected exactly 1`);
+    for (const r of mcp) {
+      if (r.spec?.url !== MCP_URL) fail(`${msPlugin}: RemoteMCPServer spec.url is ${JSON.stringify(r.spec?.url)}, expected "${MCP_URL}"`);
+      else note(`${msPlugin}: RemoteMCPServer spec.url = ${r.spec.url}`);
+    }
+  }
 });
 
 // ---------------------------------------------------------------------------------------------
@@ -310,7 +325,7 @@ await check('6. ChatGPT listing limits (plugin.json extensions.com.openai)', ({ 
   if (pos !== undefined && (!Array.isArray(pos) || pos.length !== 5)) fail(`review.test_cases.positive: expected exactly 5, found ${pos?.length}`);
   if (neg !== undefined && (!Array.isArray(neg) || neg.length !== 3)) fail(`review.test_cases.negative: expected exactly 3, found ${neg?.length}`);
   if (!p.extensions?.['com.openai']?.review?.demo_recording_url)
-    note('note: review.demo_recording_url is not set yet (needed before the ChatGPT submission, see plan 5.1)');
+    note('note: review.demo_recording_url is absent, so OpenAI keeps the video already saved for the plugin (never set it to "": that clears it)');
 });
 
 // ---------------------------------------------------------------------------------------------
@@ -358,7 +373,12 @@ await check('8. Listing URLs answer 200', async ({ fail, note, skip }) => {
   const p = json['plugin.json'] ?? {};
   const ui = p.extensions?.['com.openai']?.interface ?? {};
   for (const k of ['websiteURL', 'supportURL', 'privacyPolicyURL', 'termsOfServiceURL']) add(ui[k], `plugin.json interface.${k}`);
-  add(p.extensions?.['com.openai']?.review?.demo_recording_url, 'plugin.json review.demo_recording_url');
+  // Video hosts (YouTube, Vimeo) answer automated requests with an anti-abuse redirect: check https only
+  const demo = p.extensions?.['com.openai']?.review?.demo_recording_url;
+  if (typeof demo === 'string' && demo) {
+    if (!demo.startsWith('https://')) fail(`plugin.json review.demo_recording_url: ${demo} is not https`);
+    else note(`https (not fetched) ${demo}`);
+  }
   for (const f of [...VERSION_JSON_FILES, ...MARKETPLACE_FILES]) {
     const m = json[f] ?? {};
     for (const k of ['homepage', 'repository', 'documentationUrl', 'supportUrl', 'privacyPolicyUrl', 'termsOfServiceUrl'])

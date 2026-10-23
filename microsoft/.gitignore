@@ -1,0 +1,17 @@
+# Agents Toolkit files that must never be committed
+# env/.env.<environment> files hold the tenant id and the DCR reference id written by
+# provision: kept out of this public repo, backed up privately (see README.md)
+env/.env.*
+env/.env.local*
+.localConfigs*
+appPackage/build/
+appPackage/.generated
+*.zip
+
+# dependencies
+node_modules/
+
+# misc
+.env
+.deployment
+.DS_Store

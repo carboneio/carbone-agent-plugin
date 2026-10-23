@@ -25,6 +25,7 @@
   - `.cursor-plugin/plugin.json`: `version`
   - `.antigravity-plugin/plugin.json`: `version`
   - `gemini-extension.json`: `version`
+  - `microsoft/appPackage/manifest.json`: `version`
   - `skills/carbone/SKILL.md`: `metadata.version`
 
   Neither marketplace file (`.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`) carries a version; `scripts/validate.mjs` enforces both.

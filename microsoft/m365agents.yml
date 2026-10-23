@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.13/yaml.schema.json
+# Microsoft 365 Agents Toolkit project for the Carbone declarative agent.
+# Based on the toolkit's da/mcp-server template (stable release 6.18.0). See README.md.
+# Visit https://aka.ms/teamsfx-actions for details on actions
+version: v1.13
+
+environmentFolderPath: ./env
+
+# Triggered when 'atk provision' is executed
+provision:
+  # Registers the app in the Teams Developer Portal. TEAMS_APP_ID is preset in
+  # env/.env.dev to the permanent id from appPackage/manifest.json.
+  - uses: teamsApp/create
+    with:
+      name: Carbone
+    writeToEnvironmentFile:
+      teamsAppId: TEAMS_APP_ID
+
+  # Creates the OAuth configuration through dynamic client registration with
+  # account.carbone.io. The id is written to CARBONE_DCR_REFERENCE_ID and used
+  # as runtimes[0].auth.reference_id in appPackage/ai-plugin.json.
+  # The configuration can't be edited after creation, and this step is skipped
+  # while CARBONE_DCR_REFERENCE_ID has a value. Never clear it to re-register.
+  - uses: dcr/register
+    with:
+      # Shown on the account.carbone.io consent screen. Keep this exact name.
+      name: Microsoft 365 Copilot
+      # Any app can use it. A registration bound to one app id fails every
+      # call with HTTP 404 when the calling app id doesn't match it.
+      applicableToApps: AnyApp
+      # Any tenant can use it: required for a public store listing.
+      targetAudience: AnyTenant
+      # Microsoft reads the server's protected resource metadata and sends the
+      # expected resource and scope; sign-in needs it. Requires the toolkit CLI
+      # 1.1.19 or later: 1.1.18 and the 6.18.0 extension reject this field.
+      mcpResourceUrl: https://mcp.carbone.io
+      targetUrlsShouldStartWith:
+        - https://mcp.carbone.io
+    writeToEnvironmentFile:
+      configurationId: CARBONE_DCR_REFERENCE_ID
+
+  # Build app package with latest env value
+  - uses: teamsApp/zipAppPackage
+    with:
+      # Path to manifest template
+      manifestPath: ./appPackage/manifest.json
+      outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+      outputFolder: ./appPackage/build
+
+  # Validate app package using validation rules
+  - uses: teamsApp/validateAppPackage
+    with:
+      # Relative path to this file. This is the path for built zip file.
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+
+  # Apply the app manifest to an existing app in Developer Portal.
+  # Will use the app id in manifest file to determine which app to update.
+  - uses: teamsApp/update
+    with:
+      # Relative path to this file. This is the path for built zip file.
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+
+  # Sideload the agent for the signed-in account (Teams, Outlook and the Microsoft 365 app)
+  - uses: copilotAgent/publish
+    with:
+      # Relative path to the build app package.
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+    # Write the information of created resources into environment file for
+    # the specified environment variable(s).
+    writeToEnvironmentFile:
+      titleId: M365_TITLE_ID
+      appId: M365_APP_ID
+
+# Triggered when 'atk publish' is executed (organization catalog only;
+# the public store listing goes through Partner Center, see README.md)
+publish:
+  # Build app package with latest env value
+  - uses: teamsApp/zipAppPackage
+    with:
+      # Path to manifest template
+      manifestPath: ./appPackage/manifest.json
+      outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+      outputFolder: ./appPackage/build
+  # Validate app package using validation rules
+  - uses: teamsApp/validateAppPackage
+    with:
+      # Relative path to this file. This is the path for built zip file.
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+  # Apply the app manifest to an existing app in Developer Portal.
+  # Will use the app id in manifest file to determine which app to update.
+  - uses: teamsApp/update
+    with:
+      # Relative path to this file. This is the path for built zip file.
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+  # Publish the agent to tenant app catalog
+  - uses: copilotAgent/publish
+    with:
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+      scope: tenant
+    # Write the information of created resources into environment file for
+    # the specified environment variable(s).
+    writeToEnvironmentFile:
+      titleId: M365_PUBLISHED_TITLE_ID
+      appId: M365_PUBLISHED_APP_ID
+projectId: 50456f10-e601-4c83-a479-5f6a2fa369c4

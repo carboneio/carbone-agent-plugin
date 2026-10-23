@@ -1,0 +1,34 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.30/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.30",
+  "version": "2.0.0",
+  "id": "fbcff75e-fd36-4d28-961a-984eee61f8f5",
+  "developer": {
+    "name": "Carbone",
+    "websiteUrl": "https://carbone.io",
+    "privacyUrl": "https://carbone.io/company/privacy-policy.html",
+    "termsOfUseUrl": "https://carbone.io/company/terms-of-service.html"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "Carbone",
+    "full": "Carbone document generation"
+  },
+  "description": {
+    "short": "Turn templates into documents",
+    "full": "Generate professional-grade PDF, Word, Excel and PowerPoint documents from your own templates and JSON data, one document or a series of documents. Carbone works in Microsoft 365 Copilot: describe what you need in the chat and get a document that follows your company's layout exactly.\n\nWhat you can do:\n- Fill your stored templates (invoices, quotes, contracts, certificates, reports) with data from the conversation, an email, a CRM export or an Excel table.\n- Design a new HTML or Markdown template with Carbone, preview it as a PDF and save it to your template library.\n- Browse your library by category and tag, see the data each template expects, update its details or publish a new version.\n- Add a watermark or an open password to a PDF, and convert documents between formats such as Markdown to Word or Word to PDF.\n- Produce the same document in several languages with local date and amount formats.\n\nTry asking:\n- \"Fill my Invoice template for Northwind Traders: 3 consulting days at 850 EUR, due in 30 days.\"\n- \"Show my stored templates by category, with the fields each one expects.\"\n- \"Create a PDF training certificate for each of these people: Alice Martin, Bruno Costa, Chen Wei.\"\n\nBefore you start:\n- You need a Carbone account. Copilot asks you to sign in on first use, and you can create an account from the sign-in page.\n- Each generated document counts against your Carbone plan.\n- Without a Carbone Cloud subscription, every document is delivered as a watermarked PDF, whatever format you request. With a subscription, you get any supported format without a watermark.\n\nHow documents are delivered: each document comes as a one-time download link in the chat. The link works once and expires shortly, so download the file right away.\n\nLimitations: Carbone can't read files attached to the chat or stored in OneDrive or SharePoint yet. Share a public HTTPS link or paste the content instead. Word, Excel and PowerPoint templates are edited in Office and uploaded through a public link or Carbone Studio.\n\nAI-generated content: this agent uses AI to prepare templates and data, and the result may be inaccurate. Review every document before you share it. To report harmful or inappropriate content, email support@carbone.io.\n\nHelp: visit help.carbone.io or email support@carbone.io."
+  },
+  "accentColor": "#A544C5",
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "carbone",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+  "validDomains": []
+}

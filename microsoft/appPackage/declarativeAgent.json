@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.8/schema.json",
+  "version": "v1.8",
+  "name": "Carbone",
+  "description": "Generate PDF, Word, Excel and PowerPoint documents from your templates and data.",
+  "disclaimer": {
+    "text": "This agent uses AI to prepare templates, data and documents. AI-generated content may be inaccurate: review every document before you share or send it. To report harmful or inappropriate content, email support@carbone.io."
+  },
+  "instructions": "$[file('instruction.txt')]",
+  "capabilities": [
+    {
+      "name": "WebSearch",
+      "sites": [
+        {
+          "url": "https://carbone.io/documentation"
+        }
+      ]
+    }
+  ],
+  "conversation_starters": [
+    {
+      "title": "Fill my invoice template",
+      "text": "Fill my Invoice template for Northwind Traders: 3 consulting days at 850 EUR and 1 training session at 1200 EUR, issued today, due in 30 days."
+    },
+    {
+      "title": "Quote from deal notes",
+      "text": "Create a PDF quote with page numbers from these deal notes: Contoso Ltd, 25 Pro licenses at 49 USD per month for 12 months, 10% discount, valid until the end of next month."
+    },
+    {
+      "title": "My template library",
+      "text": "Show my stored templates by category, with their tags and the fields each one expects."
+    },
+    {
+      "title": "Certificates for a list",
+      "text": "Create a PDF training certificate for each person: Alice Martin, Bruno Costa, Chen Wei. Course: Data Privacy Basics, completed on 2026-10-15."
+    },
+    {
+      "title": "Confidential PDF",
+      "text": "Render my Invoice template with its stored sample data as a PDF with a CONFIDENTIAL watermark and an open password that I will give you."
+    },
+    {
+      "title": "Reusable offer letter",
+      "text": "Design a reusable offer letter template with candidate name, job title, start date and salary, show me a sample PDF, then save it to my library."
+    },
+    {
+      "title": "New template version",
+      "text": "Open my Invoice template, add a payment terms line under the total, and save it as a new version."
+    },
+    {
+      "title": "Organize a template",
+      "text": "Add the tags billing and 2026 to my Invoice template and move it to the finance category."
+    },
+    {
+      "title": "French and English versions",
+      "text": "Generate my Invoice template in French and in English from its sample data, with local date and amount formats."
+    },
+    {
+      "title": "Markdown to Word",
+      "text": "Convert this Markdown to a Word document: # Q3 review - Revenue up 12 percent - Two new clients signed - Next step: hire a sales lead"
+    },
+    {
+      "title": "Fix empty fields",
+      "text": "My document shows an empty client name. The tag is {d.customer.name} and my data has client.name. What is wrong and how do I fix it?"
+    },
+    {
+      "title": "What my account supports",
+      "text": "Check that the Carbone service is up, then list the output formats, converters and PDF options I can use."
+    }
+  ],
+  "actions": [
+    {
+      "id": "carbone",
+      "file": "ai-plugin.json"
+    }
+  ]
+}

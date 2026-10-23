@@ -17,6 +17,13 @@ export const VERSION_JSON_FILES = [
   '.cursor-plugin/plugin.json',
   '.antigravity-plugin/plugin.json',
   'gemini-extension.json',
+  'microsoft/appPackage/manifest.json',
+];
+// Microsoft 365 Copilot app package (AGENT_PLUGIN_PLAN.md section 5.9).
+export const MICROSOFT_JSON_FILES = [
+  'microsoft/appPackage/manifest.json',
+  'microsoft/appPackage/declarativeAgent.json',
+  'microsoft/appPackage/ai-plugin.json',
 ];
 export const SKILL_MD = 'skills/carbone/SKILL.md';
 export const MARKETPLACE_FILES = ['.claude-plugin/marketplace.json', '.agents/plugins/marketplace.json'];
