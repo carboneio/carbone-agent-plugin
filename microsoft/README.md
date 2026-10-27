@@ -29,8 +29,11 @@ The registration created by provision can't be edited or recovered. Never clear 
 ## Build the package
 
 ```sh
+set -a; . env/.env.dev; set +a
 atk package --env dev
 ```
+
+The first line loads `env/.env.dev` into the shell: `atk package` doesn't read it on its own.
 
 Upload `appPackage/build/appPackage.dev.zip` to Partner Center (Microsoft 365 and Copilot offer). Never zip `appPackage/` by hand: the toolkit fills in the placeholders.
 
