@@ -2,7 +2,7 @@
 
 [Add to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Carbone&connectorUrl=https%3A%2F%2Fmcp.carbone.io) [Add to Cursor](https://cursor.com/en/install-mcp?name=carbone&config=eyJ1cmwiOiJodHRwczovL21jcC5jYXJib25lLmlvIn0=) [Install in VS Code](https://vscode.dev/redirect/mcp/install?name=carbone&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.carbone.io%22%7D)
 
-The Carbone agent plugin: the Carbone skill and MCP server for any AI agent that supports skills or remote MCP servers, including Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI and Antigravity. Install it once in your AI assistant to design document templates and generate PDF, Word, Excel and PowerPoint documents from your data in the same conversation.
+The Carbone agent plugin: the Carbone skill and MCP server for any AI agent that supports skills or remote MCP servers, including Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI, Antigravity, Devin and Kiro. Install it once in your AI assistant to design document templates and generate PDF, Word, Excel and PowerPoint documents from your data in the same conversation.
 
 ## What it does
 
@@ -27,15 +27,17 @@ The Carbone agent plugin: the Carbone skill and MCP server for any AI agent that
 
 | Assistant | Install |
 |---|---|
-| ChatGPT | Plugins directory: coming soon |
-| Claude (claude.ai, Desktop, Cowork) | Custom connector `https://mcp.carbone.io`, and upload `carbone.skill`. Directory: coming soon |
+| Claude (claude.ai, Desktop, Cowork) | **Customize**, **Plugins**, **Add marketplace** `carboneio/carbone-agent-plugin` |
 | Claude Code | `/plugin marketplace add carboneio/carbone-agent-plugin`, then `/plugin install carbone@carbone` |
-| Codex | `codex plugin marketplace add carboneio/carbone-agent-plugin` |
-| Cursor | Copy this repository to `~/.cursor/plugins/local/carbone`. Marketplace: coming soon |
+| ChatGPT | Custom MCP server `https://mcp.carbone.io`, and upload `carbone.skill` |
+| Codex | `codex plugin marketplace add carboneio/carbone-agent-plugin`, then `codex plugin add carbone@carbone` |
+| Cursor | Team marketplace from this repository, or clone it to `~/.cursor/plugins/local/carbone` |
 | VS Code, GitHub Copilot | `copilot plugin install carboneio/carbone-agent-plugin`, or **Chat: Install Plugin From Source** |
-| Antigravity | `agy plugin install https://github.com/carboneio/carbone-agent-plugin` |
 | Gemini CLI | `gemini extensions install https://github.com/carboneio/carbone-agent-plugin` |
-| Mistral Le Chat, others | Add the MCP server `https://mcp.carbone.io` as a custom connector |
+| Antigravity | `agy plugin install https://github.com/carboneio/carbone-agent-plugin` |
+| Devin | `devin plugins install carboneio/carbone-agent-plugin` |
+| Kiro | **Powers**, **Add Custom Power**, **Import power from GitHub** with this repository URL |
+| Mistral Vibe, others | Add the MCP server `https://mcp.carbone.io` as a custom connector |
 | Skill only | `npx skills add carboneio/carbone-agent-plugin`, or upload `carbone.skill` |
 
 The skill file is attached to every release: **[carbone.skill](https://github.com/carboneio/carbone-agent-plugin/releases/latest/download/carbone.skill)**.
@@ -51,16 +53,19 @@ Setup instructions: https://carbone.io/documentation/developer/ai/mcp.md
 Then start the sign-in so I can connect my Carbone account.
 ```
 
-### ChatGPT
-
-Coming soon: Carbone in the ChatGPT Plugins directory. The same listing will cover Codex, which you can already install from this repository (see [Codex](#codex)).
-
 ### Claude (claude.ai, Desktop, Cowork)
+
+First turn on **Code execution and file creation** in **Settings**, **Capabilities**, so the skill can run. On Team and Enterprise plans, an Owner turns it on in **Organization settings**, **Capabilities**.
+
+Go to **Customize**, **Plugins**, click **Add**, then **Add marketplace**, enter `carboneio/carbone-agent-plugin` and install **Carbone**. Then open the plugin's **Connectors** tab, add the Carbone connector and click **Connect**. On Team and Enterprise plans, an Owner adds the connector for the organization.
+
+<details>
+<summary>Manual setup</summary>
 
 - **Server**: go to **Customize**, **Connectors**, click **Add custom connector**, and enter the URL `https://mcp.carbone.io`. Or use the link [Add to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Carbone&connectorUrl=https%3A%2F%2Fmcp.carbone.io). On Team and Enterprise plans, an Owner adds it first in **Organization settings**, **Connectors**; then each member clicks **Connect** and signs in.
 - **Skill**: go to **Customize**, **Skills** (claude.ai/customize/skills), click **+**, then **Create skill**, **Upload a skill**, and upload `carbone.skill`.
 
-Coming soon: Carbone in the Directory, with the connector and the plugin in one listing.
+</details>
 
 ### Claude Code
 
@@ -89,18 +94,25 @@ Then run `/mcp`, select `carbone` and choose **Authenticate**. `--scope user` ma
 Skill only: extract `carbone.skill` into your skills folder.
 
 ```bash
+mkdir -p ~/.claude/skills
 unzip carbone.skill -d ~/.claude/skills/
 ```
 
 </details>
 
+### ChatGPT
+
+- **Server**: open **Plugins** in the left sidebar, click **Add**, then **Add custom MCP server**. Enter the name `Carbone` and the URL `https://mcp.carbone.io`, choose **OAuth**, then sign in with your Carbone account.
+- **Skill**: open **Skills** ([chatgpt.com/skills](https://chatgpt.com/skills)), click **Create**, **Upload from your computer**, and upload `carbone.skill`.
+
 ### Codex
 
 ```bash
 codex plugin marketplace add carboneio/carbone-agent-plugin
+codex plugin add carbone@carbone
 ```
 
-Then install Carbone from the Plugins Directory. Coming soon: Carbone in the ChatGPT plugin catalog, which Codex uses.
+Codex asks you to sign in during the install.
 
 <details>
 <summary>Manual setup</summary>
@@ -117,6 +129,7 @@ The second command opens your browser to sign in.
 Skill only: extract `carbone.skill` into your skills folder.
 
 ```bash
+mkdir -p ~/.agents/skills
 unzip carbone.skill -d ~/.agents/skills/
 ```
 
@@ -124,11 +137,17 @@ unzip carbone.skill -d ~/.agents/skills/
 
 ### Cursor
 
-Copy this repository to `~/.cursor/plugins/local/carbone`, then restart Cursor or run **Developer: Reload Window**. The skill and the Carbone server appear in Cursor.
+For a team (Teams and Enterprise plans), an admin opens the Cursor Dashboard, **Plugins & MCPs**, **Team Marketplaces**, clicks **Add Marketplace**, chooses **Import from Repo** and enters `https://github.com/carboneio/carbone-agent-plugin`.
+
+For yourself:
+
+```bash
+git clone https://github.com/carboneio/carbone-agent-plugin ~/.cursor/plugins/local/carbone
+```
+
+Then run **Developer: Reload Window**, and sign in from Cursor's MCP settings.
 
 Server only: use the link [Add to Cursor](https://cursor.com/en/install-mcp?name=carbone&config=eyJ1cmwiOiJodHRwczovL21jcC5jYXJib25lLmlvIn0=), then sign in from Cursor's MCP settings.
-
-Coming soon: Carbone in the Cursor Marketplace.
 
 ### VS Code, GitHub Copilot
 
@@ -154,6 +173,7 @@ VS Code asks you to sign in when it starts the server.
 Skill only: extract `carbone.skill` into your skills folder.
 
 ```bash
+mkdir -p ~/.copilot/skills
 unzip carbone.skill -d ~/.copilot/skills/
 ```
 
@@ -165,7 +185,7 @@ unzip carbone.skill -d ~/.copilot/skills/
 agy plugin install https://github.com/carboneio/carbone-agent-plugin
 ```
 
-Then open **Agent settings**, **Customizations**, and choose **Authenticate** for Carbone. Sign-in asks you to copy and paste an authorization code.
+Then open **Agent settings**, **Customizations**, choose **Authenticate** for Carbone and follow the sign-in steps.
 
 ### Gemini CLI
 
@@ -173,7 +193,7 @@ Then open **Agent settings**, **Customizations**, and choose **Authenticate** fo
 gemini extensions install https://github.com/carboneio/carbone-agent-plugin
 ```
 
-Restart Gemini CLI. Sign-in starts in your browser the first time Carbone is called; if it doesn't, run `/mcp auth carbone`. Sign-in needs a browser, so it doesn't work over SSH.
+Restart Gemini CLI. Your browser opens to sign in the first time Carbone is used. To sign in again, run `/mcp auth carbone`.
 
 Unpaid tier and Google One users: Gemini CLI was replaced by Antigravity CLI on June 18, 2026 (see [Antigravity](#antigravity)).
 
@@ -196,9 +216,58 @@ gemini skills install https://github.com/carboneio/carbone-agent-plugin.git --pa
 
 </details>
 
-### Mistral Le Chat and other assistants
+### Devin
 
-Add the MCP server `https://mcp.carbone.io` as a custom connector. In Le Chat, an admin adds the URL. Any assistant that supports remote MCP servers with OAuth can connect the same way.
+```bash
+devin plugins install carboneio/carbone-agent-plugin
+```
+
+Then sign in from **Customize**, **MCPs**, or run `devin mcp login carbone`.
+
+<details>
+<summary>Manual setup</summary>
+
+Server only:
+
+```bash
+devin mcp add -s user carbone https://mcp.carbone.io
+devin mcp login carbone
+```
+
+Skill only:
+
+```bash
+mkdir -p ~/.config/devin/skills
+unzip carbone.skill -d ~/.config/devin/skills/
+```
+
+</details>
+
+### Kiro
+
+Open the **Powers** panel, click **Add Custom Power**, choose **Import power from GitHub**, enter `https://github.com/carboneio/carbone-agent-plugin`, then click **Install**. Kiro opens your browser to sign in when it first connects to Carbone.
+
+<details>
+<summary>Manual setup</summary>
+
+Server only: add this to `~/.kiro/settings/mcp.json`, then save.
+
+```json
+{ "mcpServers": { "carbone": { "url": "https://mcp.carbone.io" } } }
+```
+
+Skill only:
+
+```bash
+mkdir -p ~/.kiro/skills
+unzip carbone.skill -d ~/.kiro/skills/
+```
+
+</details>
+
+### Mistral Vibe and other assistants
+
+Add the MCP server `https://mcp.carbone.io` as a custom connector. In Vibe, an admin opens **Connectors**, clicks **+ Add Connector**, chooses **Custom MCP Connector** and enters the URL. Any assistant that supports remote MCP servers with OAuth can connect the same way.
 
 For the skill alone on other platforms, see [agentskills.io](https://agentskills.io/home).
 
