@@ -1,6 +1,6 @@
 # Carbone agent plugin
 
-[Add to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Carbone&connectorUrl=https%3A%2F%2Fmcp.carbone.io) [Add to Cursor](https://cursor.com/en/install-mcp?name=carbone&config=eyJ1cmwiOiJodHRwczovL21jcC5jYXJib25lLmlvIn0=) [Install in VS Code](https://vscode.dev/redirect/mcp/install?name=carbone&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.carbone.io%22%7D)
+[Add to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Carbone&connectorUrl=https%3A%2F%2Fmcp.carbone.io) [Add to ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad79c4295308191a2b0eb7e68535c44) [Add to Cursor](https://cursor.com/en/install-mcp?name=carbone&config=eyJ1cmwiOiJodHRwczovL21jcC5jYXJib25lLmlvIn0=) [Install in VS Code](https://vscode.dev/redirect/mcp/install?name=carbone&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmcp.carbone.io%22%7D)
 
 The Carbone agent plugin: the Carbone skill and MCP server for any AI agent that supports skills or remote MCP servers, including Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI, Antigravity, Devin and Kiro. Install it once in your AI assistant to design document templates and generate PDF, Word, Excel and PowerPoint documents from your data in the same conversation.
 
@@ -29,7 +29,7 @@ The Carbone agent plugin: the Carbone skill and MCP server for any AI agent that
 |---|---|
 | Claude (claude.ai, Desktop, Cowork) | **Customize**, **Plugins**, **Add marketplace** `carboneio/carbone-agent-plugin` |
 | Claude Code | `/plugin marketplace add carboneio/carbone-agent-plugin`, then `/plugin install carbone@carbone` |
-| ChatGPT | Custom MCP server `https://mcp.carbone.io`, and upload `carbone.skill` |
+| ChatGPT | Add [Carbone from the ChatGPT plugin marketplace](https://chatgpt.com/plugins/plugin_asdk_app_6ad79c4295308191a2b0eb7e68535c44) |
 | Codex | `codex plugin marketplace add carboneio/carbone-agent-plugin`, then `codex plugin add carbone@carbone` |
 | Cursor | Team marketplace from this repository, or clone it to `~/.cursor/plugins/local/carbone` |
 | VS Code, GitHub Copilot | `copilot plugin install carboneio/carbone-agent-plugin`, or **Chat: Install Plugin From Source** |
@@ -101,6 +101,10 @@ unzip carbone.skill -d ~/.claude/skills/
 </details>
 
 ### ChatGPT
+
+- **Marketplace**: open [the Carbone plugin](https://chatgpt.com/plugins/plugin_asdk_app_6ad79c4295308191a2b0eb7e68535c44) in ChatGPT, click **Add**, then sign in with your Carbone account. The plugin includes the MCP server and the skill.
+
+Manual alternative, without the marketplace:
 
 - **Server**: open **Plugins** in the left sidebar, click **Add**, then **Add custom MCP server**. Enter the name `Carbone` and the URL `https://mcp.carbone.io`, choose **OAuth**, then sign in with your Carbone account.
 - **Skill**: open **Skills** ([chatgpt.com/skills](https://chatgpt.com/skills)), click **Create**, **Upload from your computer**, and upload `carbone.skill`.
