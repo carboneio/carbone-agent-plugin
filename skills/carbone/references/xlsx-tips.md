@@ -1,6 +1,6 @@
 # Carbone XLSX/ODS — Formula Tips
 
-Read this file when the user asks about dynamic Excel formulas that survive Carbone row injection, computing totals after a loop, referencing injected rows with MATCH/INDEX, generating one sheet per array item, or why a cell's percentage/currency/date format is not being applied.
+Read this file when the user asks about dynamic Excel formulas that survive Carbone row injection, computing totals after a loop, referencing injected rows with MATCH/INDEX, generating one sheet per array item, line breaks inside a cell, or why a cell's percentage/currency/date format is not being applied.
 
 ---
 
@@ -15,6 +15,16 @@ A value reaches the cell as text when the JSON field is a string (`"0.032"`), or
 ```
 
 **The `:formatN` precision argument is ignored in XLSX/ODS.** Because the cell's own number format controls decimal display, `:formatN`, `:formatN(0)`, and `:formatN(2)` all behave identically — Carbone writes the raw native number and lets Excel/Calc format it. If you need a specific number of decimals, set them on the cell format, not on the tag.
+
+---
+
+## Line breaks inside a cell (v5.17.0+)
+
+`:convCRLF` turns `\n` / `\r\n` in the data into real line breaks inside an XLSX cell. Enable **Wrap text** on the cell, otherwise the content stays on one line:
+```
+{d.address:convCRLF}
+{d.names:arrayJoin('\n'):convCRLF}    ← one array item per line
+```
 
 ---
 

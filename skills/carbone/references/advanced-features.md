@@ -8,7 +8,7 @@ Read this file when the user asks for full details on: the `:color` formatter (s
 
 `:color(scope, type)` — the tag prints nothing in the document. Color must be **6-digit hex**, with or without `#` (e.g. `FF0000` or `#FF0000`). Invalid colors are replaced with light gray `#888888`.
 
-**Compatible templates**: DOCX, ODT, ODS, ODP, PPTX, HTML — a colored PDF is obtained by converting one of these. A **PDF used as a template** does not support `:color` (see `pdf-templates.md`). Not available in Embedded Carbone JS.
+**Compatible templates**: DOCX, ODT, ODS, ODP, PPTX, HTML, Markdown, SVG — a colored PDF is obtained by converting one of these. A **PDF used as a template** does not support `:color` (see `pdf-templates.md`). Not available in Embedded Carbone JS.
 
 | `scope` | Element targeted |
 |---|---|
@@ -40,6 +40,7 @@ Read this file when the user asks for full details on: the `:color` formatter (s
 Static color replacement in template: `{bindColor(myColorRef, format) = d.myVar}`
 - `myColorRef` is the placeholder color already applied in the template (used to identify what to replace)
 - `format`: `#hexa`, `hexa`, `color` (named), `rgb` (object), `hsl` (object)
+- With `#hexa` / `hexa`, a data value that is not hexadecimal (3 to 6 hex digits, optional `#`) is ignored and the element keeps its inherited color (v5.14.4+)
 - For DOCX text **background**: only 17 named colors work (`yellow`, `green`, `cyan`, `magenta`, `blue`, `red`, `darkBlue`, `darkCyan`, `darkGreen`, `darkMagenta`, `darkRed`, `darkYellow`, `darkGray`, `lightGray`, `black`, `white`, `transparent`)
 
 ---
@@ -50,7 +51,7 @@ Static color replacement in template: `{bindColor(myColorRef, format) = d.myVar}
 Insert a chart via `Insert > Chart`, edit the embedded Excel spreadsheet with Carbone loop tags directly in cell values:
 ```
 {d.temps[i].date}   {d.temps[i].min}   {d.temps[i].max}
-{d.temps[i+1].date}
+{d.temps[i+1].date} {d.temps[i+1].min} {d.temps[i+1].max}
 ```
 ⚠️ Each `[i]` expression must have its own `[i+1]` on the next row — you cannot use a single `[i+1]` for multiple `[i]` tags.
 
@@ -77,7 +78,7 @@ JSON must contain a full ECharts v5 config:
 ```json
 { "type": "echarts@v5a", "width": 600, "height": 400, "theme": null, "option": { /* ECharts config */ } }
 ```
-Compatible with: ODT, ODS, ODP, ODG, DOCX, PPTX, XLSX, HTML, PDF. Use `echarts@v5a` (not `echarts@v5`) for better SVG compatibility.
+Compatible with: ODT, ODS, ODP, ODG, DOCX, PPTX, XLSX, HTML, Markdown (v5.13.0+); PDF as output only, not a PDF form template. Use `echarts@v5a` (not `echarts@v5`) for better SVG compatibility.
 
 **Chart from an indexed array** — when data contains an array of ECharts config objects, access each by index and chain `:imageFit` to fit the chart to the placeholder size:
 ```

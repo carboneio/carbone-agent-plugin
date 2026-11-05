@@ -24,26 +24,28 @@ All formatters below are verified from official Carbone documentation. Do NOT us
 
 ## Text Formatters
 
+Example cells read: tag — JSON input → output. Inputs are written as JSON, so `"3"` is a string and `3` a number.
+
 | Formatter | Version | Description | Example |
 |---|---|---|---|
-| `:lowerCase` | v0.12.5+ | All lowercase | `'Hello':lowerCase` → `"hello"` |
-| `:upperCase` | v0.12.5+ | All uppercase | `'Hello':upperCase` → `"HELLO"` |
-| `:ucFirst` | v0.12.5+ | Capitalize first letter | `'hello world':ucFirst` → `"Hello world"` |
-| `:ucWords` | v0.12.5+ | Capitalize each word | `'hello world':ucWords` → `"Hello World"` |
+| `:lowerCase` | v0.12.5+ | All lowercase | `{d.name:lowerCase}` — `"Hello"` → `"hello"` |
+| `:upperCase` | v0.12.5+ | All uppercase | `{d.name:upperCase}` — `"Hello"` → `"HELLO"` |
+| `:ucFirst` | v0.12.5+ | Capitalize first letter | `{d.title:ucFirst}` — `"hello world"` → `"Hello world"` |
+| `:ucWords` | v0.12.5+ | Capitalize each word | `{d.title:ucWords}` — `"hello world"` → `"Hello World"` |
 | `:print(message)` | v0.13.0+ | Always return `message` regardless of input | `null:print('N/A')` → `"N/A"` |
-| `:printJSON` | v4.23.0+ | Stringify object/array to JSON string | `[1,2]:printJSON` → `"[1,2]"` |
-| `:unaccent` | v1.1.0+ | Remove accents | `'crème':unaccent` → `"creme"` |
-| `:convCRLF` | v4.1.0+ | Convert `\n`/`\r\n` to document line breaks | Supported in DOCX/PPTX/ODT/ODP/ODS |
-| `:html` | v5.0+ ENTERPRISE | Render HTML string as native document formatting. Templates: ODT, DOCX, HTML, Markdown. Headings/tables need `{o.preReleaseFeatureIn=5002000}`, the richer elements need `5011000`. Full reference → `references/advanced-features.md` "`:html` Formatter — Full Reference" | `{d.richContent:html}` |
-| `:substr(begin, end, wordMode)` | v4.18.0+ | Slice string | `'foobar':substr(0,3)` → `"foo"` |
-| `:split(delimiter)` | v4.12.0+ | Split string into array | `'a,b,c':split(',')` → `["a","b","c"]` |
-| `:padl(targetLength, padString)` | v3.0.0+ | Left-pad string | `'3':padl(4,'0')` → `"0003"` |
-| `:padr(targetLength, padString)` | v3.0.0+ | Right-pad string | `'3':padr(4,'0')` → `"3000"` |
-| `:ellipsis(maximum)` | v4.12.0+ | Truncate at `maximum` characters and append `...` (final length = `maximum` + 3 when truncated; unchanged when input already fits) | `'hello world':ellipsis(5)` → `"hello..."` |
-| `:prepend(text)` | v4.12.0+ | Add prefix | `'world':prepend('hello ')` → `"hello world"` |
-| `:append(text)` | v4.12.0+ | Add suffix | `'hello':append(' world')` → `"hello world"` |
-| `:replace(oldText, newText)` | v4.12.0+ | Find & replace all occurrences | `'foo bar':replace('foo','baz')` → `"baz bar"` |
-| `:len` | v2.0.0+ | Length of string or array | `'hello':len` → `5` |
+| `:printJSON` | v4.23.0+ | Stringify object/array to JSON string | `{d.ids:printJSON}` — `[1,2]` → `"[1,2]"` |
+| `:unaccent` | v1.1.0+ | Remove accents | `{d.name:unaccent}` — `"crème"` → `"creme"` |
+| `:convCRLF` | v4.1.0+ | Convert `\n`/`\r\n` to document line breaks | Supported in DOCX/PPTX/ODT/ODP/ODS and XLSX (v5.17.0+). In an XLSX cell the breaks show only when the cell's **Wrap text** option is enabled |
+| `:html` | v3.0.0+ ENTERPRISE, use v5+ | Render HTML string as native document formatting. Exists since v3, but most of the supported elements, the parser fixes and the themes arrived in v5, so recommend v5 or later. Templates: ODT, DOCX, HTML, Markdown. Headings/tables need `{o.preReleaseFeatureIn=5002000}`, the richer elements need `5011000`. Full reference → `references/advanced-features.md` "`:html` Formatter — Full Reference" | `{d.richContent:html}` |
+| `:substr(begin, end, wordMode)` | v4.18.0+ | Slice string | `{d.code:substr(0,3)}` — `"foobar"` → `"foo"` |
+| `:split(delimiter)` | v4.12.0+ | Split string into array | `{d.tags:split(',')}` — `"a,b,c"` → `["a","b","c"]` |
+| `:padl(targetLength, padString)` | v3.0.0+ | Left-pad string. `targetLength` max 10,000, a larger value is rejected (v5.14.4+) | `{d.id:padl(4,'0')}` — `"3"` → `"0003"` |
+| `:padr(targetLength, padString)` | v3.0.0+ | Right-pad string. `targetLength` max 10,000, a larger value is rejected (v5.14.4+) | `{d.id:padr(4,'0')}` — `"3"` → `"3000"` |
+| `:ellipsis(maximum)` | v4.12.0+ | Truncate at `maximum` characters and append `...` (final length = `maximum` + 3 when truncated; unchanged when input already fits) | `{d.title:ellipsis(5)}` — `"hello world"` → `"hello..."` |
+| `:prepend(text)` | v4.12.0+ | Add prefix | `{d.name:prepend('hello ')}` — `"world"` → `"hello world"` |
+| `:append(text)` | v4.12.0+ | Add suffix | `{d.name:append(' world')}` — `"hello"` → `"hello world"` |
+| `:replace(oldText, newText)` | v4.12.0+ | Find & replace all occurrences | `{d.text:replace('foo','baz')}` — `"foo bar"` → `"baz bar"` |
+| `:len` | v2.0.0+ | Length of string or array | `{d.name:len}` — `"hello"` → `5` |
 | `:t` | v4.23.2+ | Translate dynamic value via i18n dictionary | `{d.status:t}` |
 | `:preserveCharRef` | v4.23.8+ | Preserve character references | — |
 
@@ -53,20 +55,21 @@ All formatters below are verified from official Carbone documentation. Do NOT us
 
 | Formatter | Version | Description | Example |
 |---|---|---|---|
-| `:formatN(precision)` | v1.2.0+ | Format number using `lang` option for separators | `1000.456:formatN()` with `lang:"en-us"` → `"1,000.456"` |
-| `:round(precision)` | v1.2.0+ | Round correctly (not like toFixed) | `1.05:round(1)` → `1.1` |
-| `:add(value)` | v1.2.0+ | Add two numbers | `1000.4:add(2)` → `1002.4` |
-| `:sub(value)` | v1.2.0+ | Subtract | `1000.4:sub(2)` → `998.4` |
-| `:mul(value)` | v1.2.0+ | Multiply | `1000.4:mul(2)` → `2000.8` |
-| `:div(value)` | v1.2.0+ | Divide | `1000.4:div(2)` → `500.2` |
-| `:mod(value)` | v4.5.2+ | Modulo | `3:mod(2)` → `1` |
-| `:abs` | v4.12.0+ | Absolute value | `-10:abs` → `10` |
-| `:ceil` | v4.22.8+ | Round up to nearest integer | `1.05:ceil` → `2` |
-| `:floor` | v4.22.8+ | Round down to nearest integer | `1.05:floor` → `1` |
+| `:formatN(precision)` | v1.2.0+ | Format number using `lang` option for separators. `precision` max 40, a larger value is rejected (v5.14.4+) | `{d.price:formatN()}` — `1000.456` → `"1,000.456"` with `lang:"en-us"` |
+| `:round(precision)` | v1.2.0+ | Round correctly (not like toFixed) | `{d.price:round(1)}` — `1.05` → `1.1` |
+| `:add(value)` | v1.2.0+ | Add two numbers | `{d.price:add(2)}` — `1000.4` → `1002.4` |
+| `:sub(value)` | v1.2.0+ | Subtract | `{d.price:sub(2)}` — `1000.4` → `998.4` |
+| `:mul(value)` | v1.2.0+ | Multiply | `{d.price:mul(2)}` — `1000.4` → `2000.8` |
+| `:div(value)` | v1.2.0+ | Divide | `{d.price:div(2)}` — `1000.4` → `500.2` |
+| `:mod(value)` | v4.5.2+ | Modulo | `{d.qty:mod(2)}` — `3` → `1` |
+| `:abs` | v4.12.0+ | Absolute value | `{d.balance:abs}` — `-10` → `10` |
+| `:ceil` | v4.22.8+ | Round up to nearest integer | `{d.price:ceil}` — `1.05` → `2` |
+| `:floor` | v4.22.8+ | Round down to nearest integer | `{d.price:floor}` — `1.05` → `1` |
 | `:int` | v1.0.0+ | Convert to integer (UNRECOMMENDED) — use `:add(0)`, `:sub(0)`, `:mul(1)`, or `:abs` to coerce a numeric string to a real number (works for floats too) | — |
 | `:toFixed` | v1.0.0+ | Fixed decimal string (UNRECOMMENDED) — use `:round(precision)` instead | — |
 | `:toEN` | v1.0.0+ | English number format (UNRECOMMENDED) — use `:formatN` with `lang` set via the API or `{o.lang=en-US}` in-template option | — |
 | `:toFR` | v1.0.0+ | French number format (UNRECOMMENDED) — use `:formatN` with `lang` set via the API or `{o.lang=fr-FR}` in-template option | — |
+| `:toWord(type, precision, keywords…)` | v5.16.0+ | Write a number in words in the report's language (`lang`), 50 languages — see "Numbers in words" below | `{d.total:toWord}` — `1234` → `"mille deux cent trente-quatre"` with `lang:"fr-fr"` |
 
 **Math formula in formatters** — `add`, `mul`, `sub`, `div` accept simple expressions:
 ```
@@ -80,10 +83,12 @@ Only `+`, `*`, `-`, `/` are allowed, without extra parentheses. `*` and `/` have
 
 | Formatter | Version | Description |
 |---|---|---|
-| `:formatC(precisionOrFormat, targetCurrency)` | v1.2.0+ | Format as currency using `lang` + `currency` options |
+| `:formatC(precisionOrFormat, targetCurrency)` | v1.2.0+ | Format as currency using `lang` + `currency` options. `precision` max 40 (v5.14.4+) |
 | `:convCurr(target, source)` | v1.2.0+ | Convert from one currency to another |
 
 **`:formatC` format codes**: `'M'` = currency name in words, `'L'` = symbol + amount, `'LL'` = amount + currency name.
+
+**Default precision** (v5.16.0+): without a `precision` argument, `:formatC` writes the number of decimals that ISO 4217 defines for the currency — none for JPY, KRW, VND, CLP, ISK, XOF, XPF and the other zero-decimal currencies, three for JOD, LYD and TND, two for most others. `{d.price:formatC}` with `1234.5` in JPY prints `¥1,235`.
 
 **`:formatC` examples** (with `lang:"en-us"`, `currency.source:"EUR"`, `currency.target:"USD"`, rates `EUR:1, USD:2`):
 ```
@@ -100,6 +105,48 @@ Only `+`, `*`, `-`, `/` are allowed, without extra parentheses. `*` and `/` have
 {d.amount:convCurr('USD')}       // 1000 > 2000
 {d.amount:convCurr('USD','USD')} // 1000 > 1000
 ```
+
+**Currency codes**: `:formatC`, `:convCurr` and `:toWord` accept ISO 4217 codes. Added in v5.16.0: `XAF` (Central African CFA franc, no decimals), `XCG` (Caribbean guilder, which replaces `ANG` in Curaçao and Sint Maarten), `CDF`, `STN`, `SHP`, `SVC`, `MRU`, `SLE`, `VES`, `VED` and `ZWG`.
+
+---
+
+## Numbers in words — `:toWord` (v5.16.0+)
+
+`:toWord(type, precision, keywords…)` writes a number in words in the language of `lang` (50 languages, 72 regional variants), the same option `:formatN` and `:formatC` read.
+
+| `type` | Output | Example (`lang:"fr-fr"`) |
+|---|---|---|
+| `W` (default) | Cardinal number | `{d.value:toWord}` — `1234` > `"mille deux cent trente-quatre"` |
+| `O` | Ordinal number | `{d.rank:toWord(O)}` — `2` > `"deuxième"` |
+| `C` | Amount with its currency | `{d.total:toWord(C)}` — `1234.5` > `"mille deux cent trente-quatre euros et cinquante centimes"` |
+
+**Precision** (second parameter, types `W` and `C`): the number of decimals written in words, max 40. Default: 3 for `W` (like `:formatN`), the currency's minor unit for `C` (2 for EUR, 3 for TND, 0 for JPY).
+```
+{d.value:toWord(W, 2)}   // 1.236 > "un virgule vingt-quatre"
+{d.total:toWord(C, 0)}   // 1234.5 > "mille deux cent trente-cinq euros" (rounded)
+```
+With `C`, a precision greater than the currency's minor unit fails the render with an explicit error.
+
+**Currency** (type `C`): the currency and the rates are those of `:formatC` (`currencySource`, `currencyTarget`, `currencyRates`); an amount already converted with `:convCurr` is not converted twice. The currencies that can be written in words depend on the language (in English: USD, CAD, AUD, NZD, SGD, GBP, EUR, INR, ZAR, TND, MAD, KWD, BHD, JOD, IQD, OMR, LYD and a few others); any other currency fails the render with an explicit error listing the supported ones.
+
+**Keywords** (after the precision, or in its place) change the wording when the language supports them. A keyword the language does not support is ignored; an unknown keyword fails the render with the list of accepted keywords.
+
+| Keyword | Effect |
+|---|---|
+| `feminine` | Feminine form (Spanish, Portuguese, Arabic, Hebrew, Russian, Polish, …): `{d.value:toWord(W, 0, feminine)}` — `1` > `"una"` in Spanish |
+| `and` / `noAnd` | Add or remove the "and" ("one hundred and one" in British English, "euros et cinquante centimes" in French) |
+| `hundredPairing` | "fifteen hundred" instead of "one thousand five hundred" |
+| `hyphen` | Hyphens between all words (French 1990 spelling, "deux-cent-un") |
+| `informal` | Common Chinese numerals instead of the financial ones |
+| `accusative` / `genitive` | Grammatical case (Arabic) |
+
+```
+{d.value:toWord(W, feminine)}
+{d.rank:toWord(O, feminine)}
+{d.total:toWord(C, noAnd)}       // 1234.5 > "mille deux cent trente-quatre euros cinquante centimes"
+```
+
+A value that cannot be converted (not a number, out of range, decimal or negative ordinal) is printed unchanged.
 
 ---
 
@@ -167,24 +214,25 @@ Locale tokens (`L`, `LL`, `LLL`, `LLLL`, `LT`) produce locale-specific output an
 {d.date:formatD('L')}                    // "20160131" > "01/31/2016"
 {d.date:formatD('LL')}                   // "20160131" > "January 31, 2016"
 {d.date:formatD('LLLL')}                 // "20160131" > "Sunday, January 31, 2016 12:00 AM"
-{d.timestamp:formatD('LLLL','X')}        // 1410715640 > "Wednesday, September 14, 2014 7:47 PM"
+{d.timestamp:formatD('LLLL','X')}        // 1410715640 > "Sunday, September 14, 2014 7:27 PM"
 {d.invoiceDate:formatD(L, YYYY-MM-DD)}  // "2024-05-13" > "05/13/2024" (explicit patternIn)
-{d.date:addD('3','day')}                 // "20160131" > "2016-02-03T00:00:00.000Z"
-{d.date:startOfD('month')}              // "20160131" > "2016-01-01T00:00:00.000Z"
+{d.date:addD(3,'day'):formatD(YYYY-MM-DD)}       // "20160131" > "2016-02-03"
+{d.date:startOfD('month'):formatD(YYYY-MM-DD)}   // "20160131" > "2016-01-01"
 ```
+`:addD`, `:subD`, `:startOfD` and `:endOfD` return a timestamp, not a readable date — always chain `:formatD` to print the result.
 `L` outputs the locale's short date (e.g. `13/05/2024` in fr-FR, `05/13/2024` in en-US). Without `patternIn`, Carbone assumes ISO 8601 input.
 
 **Unix milliseconds input (`x`)** — lowercase `x` parses the input as Unix milliseconds:
 ```
-{d.timestampMs:formatD(DD/MM/YYYY, x)}                  // 1747094400000 > "13/05/2026"
+{d.timestampMs:formatD(DD/MM/YYYY, x)}                  // 1778630400000 > "13/05/2026"
 {d.controle_date:add(10000):mul(1000):formatD(DD/MM/YYYY, x)} // unix seconds + offset > ms, then format
 ```
 When the source is Unix seconds, multiply by 1000 before passing to `formatD`.
 
-**`LLLL` and `LT` locale tokens**:
+**`LLLL` and `LT` locale tokens** (`lang:"en-us"`, `timezone:"Europe/Paris"`):
 ```
-{d.date:formatD(LLLL)}                                    // "2026-05-13T15:45:00Z" > "Monday, May 13, 2026 3:45 PM"
-{d.job.started:formatD(LT)} - {d.job.started:formatD(L)} // "2026-05-13T15:45:00Z" > "3:45 PM - 05/13/2026"
+{d.date:formatD(LLLL)}                                    // "2026-05-13T15:45:00Z" > "Wednesday, May 13, 2026 5:45 PM"
+{d.job.started:formatD(LT)} - {d.job.started:formatD(L)} // "2026-05-13T15:45:00Z" > "5:45 PM - 05/13/2026"
 ```
 
 **Abbreviated month with optional uppercase** — `MMM` = abbreviated locale month name:
@@ -260,7 +308,7 @@ Breakdown:
 {d.names:arrayJoin('',1)}    // ["homer","bart","lisa"] > "bartlisa" (skip first)
 {d.names:arrayJoin('',1,1)}  // ["homer","bart","lisa"] > "bart" (1 item from index 1)
 {d.names:arrayJoin('',0,-1)} // ["homer","bart","lisa"] > "homerbart" (all but last)
-{d.names:arrayJoin('\n'):convCRLF} // one item per line in DOCX/PPTX/ODT (join alone prints a literal \n; :convCRLF renders real line breaks)
+{d.names:arrayJoin('\n'):convCRLF} // one item per line in DOCX/PPTX/ODT/XLSX: :arrayJoin inserts the newline character, :convCRLF turns it into a document line break (XLSX cell with Wrap text)
 ```
 
 **`:arrayMap` examples**:
@@ -459,7 +507,7 @@ Tags using `:set` print **nothing**. Execution order is guaranteed within same d
 | `:formatR` | v5.0.4+ | Format a country/region code (in the data) to a human-readable name in the report's language. Accepts ISO 3166-1 Alpha-3 (`FRA`), Alpha-2 (`FR`), or Numeric (`250`). Example: `{d.countryCode:formatR}` |
 | `:imageFit(option)` | v3.2.0+ ENTERPRISE | Resize replacement image to placeholder (DOCX/ODT). `fillWidth` (default), `contain`, `fill` |
 | `:autoOrient` | v5.6.0+ ENTERPRISE | Auto-rotate a JPEG image according to its EXIF orientation (camera/smartphone). DOCX only. Use before `:imageFit` — compatible with `contain` and `fillWidth`, not with `fill`. Non-JPEG images are ignored. Example: `{d.photo:autoOrient:imageFit(contain)}` |
-| `:barcode(type, options?)` | v3.4.6+ ENTERPRISE | Insert barcode/QR as image. Write in the alt-text of a placeholder image (DOCX/ODT/PPTX/XLSX/…) or in `<img src="">` for HTML and Markdown templates (Markdown: v5.13.0+). `type`: `qrcode`, `code128`, `ean13`, `ean8`, `pdf417`, and 100+ others. `svg:true` for vector output. Options (second arg, `key:value` pairs): `width`, `height`, `scale` (1–10), `includetext`, `textsize`, `textxalign` (left/center/right/justify), `textyalign` (below/center/above), `rotate` (N/R/L/I), `barcolor` (#RRGGBB), `textcolor` (#RRGGBB), `backgroundcolor` (#RRGGBB), `eclevel` (L/M/Q/H — QR only) |
+| `:barcode(type, options?)` | v3.4.6+ ENTERPRISE | Insert barcode/QR as image. Write in the alt-text of a placeholder image (DOCX/ODT/PPTX/XLSX/…) or in `<img src="">` for HTML and Markdown templates (Markdown: v5.13.0+). `type`: `qrcode`, `code128`, `ean13`, `ean8`, `pdf417`, and 100+ others. `svg:true` for vector output. Options (second arg, `key:value` pairs): `width`, `height`, `scale` (1–10), `includetext`, `textsize`, `textxalign` (left/center/right/justify), `textyalign` (below/center/above), `rotate` (N/R/L/I), `barcolor` (#RRGGBB), `textcolor` (#RRGGBB), `backgroundcolor` (#RRGGBB), `eclevel` (L/M/Q/H — QR only). Limits (v5.14.4+): `width`/`height` max 1,000 mm and 25 million pixels together with `scale`, `textsize` max 100 pt; a larger value is rejected, not reduced |
 | `:chart` | v4.0+ ENTERPRISE | Inject an ECharts v5 chart as an image. Write in the alt-text of a placeholder image (DOCX/ODT/PPTX/XLSX/…) or in `<img src="">` for HTML and Markdown templates (Markdown: v5.13.0+). JSON must contain a full ECharts config with `type:"echarts@v5a"` |
 | `:color(scope, type)` | v4.17.0+ ENTERPRISE | Apply dynamic hex color to text, cells, rows, or shapes — [see full reference](#color-formatter--full-reference-enterprise-v417) |
 | `:appendFile(where?)` | v4.22.0+ ENTERPRISE | Append PDF at end (`'end'`, default) or `'start'` of generated PDF |

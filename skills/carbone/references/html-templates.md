@@ -274,7 +274,7 @@ Use the `<carbone-pdf-header>` and `<carbone-pdf-footer>` custom elements. Carbo
 - `{c.now}` — built-in complement value for current date/time
 - `<span class="pageNumber">` — current page number
 - `<span class="totalPages">` — total pages
-- Headers/footers are PDF-only; ignored in HTML output
+- Headers/footers are PDF-only; ignored in HTML output and when the output is an image (PNG, JPG, WebP)
 
 ---
 
@@ -291,6 +291,8 @@ Insert `<carbone-pdf-options/>` in the template with attribute-based options:
 />
 ```
 
+`<carbone-pdf-options>`, `<carbone-pdf-header>` and `<carbone-pdf-footer>` are ignored when the output is an image instead of a PDF.
+
 | Option | Type | Default | Description |
 |---|---|---|---|
 | `landscape` | boolean | false | Landscape orientation |
@@ -304,7 +306,7 @@ Insert `<carbone-pdf-options/>` in the template with attribute-based options:
 | `margin-bottom` | number | 0.5 | Bottom margin in inches |
 | `margin-left` | number | 0.5 | Left margin in inches |
 | `margin-right` | number | 0.5 | Right margin in inches |
-| `page-ranges` | string | all | e.g. `"1-5, 8, 11-13"` |
+| `page-ranges` | string | all | e.g. `"1-5, 8, 11-13"`; a plain range `"1-5"` or a single page `"2"` also works (v5.15.0+) |
 | `prefer-css-page-size` | boolean | false | Use CSS-defined page size |
 | `generate-tagged-pdf` | boolean | false | Tagged PDF/UA for accessibility |
 

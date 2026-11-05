@@ -1,6 +1,6 @@
 # Carbone — Practical Examples
 
-Read this file when the user asks about practical or real-world Carbone patterns: date/time formatting combinations, optional address blocks, checkbox rendering, `:ifEQ(NaN)` guard, range checks with `:and`, invoice aggregation chains, post-aggregation arithmetic, complement data (`{c.}`), `..` relative path in formatter args, `:add(0)` coercion before aggregation, debit/credit display branching with `abs():set()` / `div(-1):set()`, `:aggMax` with a filtered reference, or chained `:add` for sibling fields.
+Read this file when the user asks about practical or real-world Carbone patterns: date/time formatting combinations, optional address blocks, checkbox rendering, an amount in words, `:ifEQ(NaN)` guard, range checks with `:and`, invoice aggregation chains, post-aggregation arithmetic, complement data (`{c.}`), `..` relative path in formatter args, `:add(0)` coercion before aggregation, debit/credit display branching with `abs():set()` / `div(-1):set()`, `:aggMax` with a filtered reference, or chained `:add` for sibling fields.
 
 ---
 
@@ -12,11 +12,11 @@ Read this file when the user asks about practical or real-world Carbone patterns
 {d.arrivalDate:formatD(HH:mm)}        ← time column
 ```
 
-**Capitalised day/month names** — chain `:ucWords` after `formatD` when locale tokens produce lowercase day/month names:
+**Capitalised day/month names** — chain `:ucWords` after `formatD` in the locales whose day and month names are lowercase (French, Spanish, Italian, …):
 ```
 {d.order.dateCreated:formatD('dddd LL'):ucWords()}
 ```
-`dddd LL` → `"monday 13 may 2026"` → `:ucWords` → `"Monday 13 May 2026"`.
+With `lang:"fr-fr"`, `"2026-05-13"` → `"mercredi 13 mai 2026"` → `:ucWords` → `"Mercredi 13 Mai 2026"`. In `en-us` the names are already capitalised (`"Wednesday May 13, 2026"`), so `:ucWords` changes nothing.
 
 **Longer locale date format** — same pattern with a different token set:
 ```
@@ -27,14 +27,14 @@ Read this file when the user asks about practical or real-world Carbone patterns
 
 ## Conditional visibility
 
-**Optional address block** — show each paragraph only when the field is non-empty. Primary form with `showBegin/hideEnd`:
+**Optional address block** — show each paragraph only when the field is non-empty. Primary form with `showBegin/showEnd` (or `hideBegin/hideEnd` with the inverse condition):
 ```
 {d.address.street:ifNEM():showBegin}{d.address.street}{d.address.street:showEnd}
 {d.address.unit:ifNEM():showBegin}{d.address.unit}{d.address.unit:showEnd}
 {d.address.city:ifNEM():showBegin}{d.address.city}{d.address.city:showEnd}
 {d.address.country:ifEQ(Germany):hideBegin}{d.address.country}{d.address.country:hideEnd}   ← value filter: hide the country line when it equals 'Germany'
 ```
-Shorter alternative — one `:drop(row)` tag per paragraph, condition inverted. The tag prints nothing; the row disappears entirely when the field is empty:
+Shorter alternative — one `:drop(p)` tag per paragraph, condition inverted. The tag prints nothing; the paragraph disappears entirely when the field is empty:
 ```
 {d.address.street}{d.address.street:ifEM():drop(p)}
 {d.address.unit}{d.address.unit:ifEM():drop(p)}
@@ -164,6 +164,12 @@ Three image placeholders sit in the same cell — only the matching one survives
 {d.total:sub(.paid):formatC(2)}
 ```
 `[typeSelect=Payment]` filters the array before aggregating. The result is stored in `d.paid` and referenced in the balance cell.
+
+**Amount in words next to the figure** — cheques, contracts and invoices repeat the total in letters (v5.16.0+):
+```
+{d.total:formatC} ({d.total:toWord(C)})
+```
+With `lang:"fr-fr"` and EUR, `1234.5` gives `1 234,50 € (mille deux cent trente-quatre euros et cinquante centimes)`. Both formatters read the same `lang` and currency options, so the two never disagree. Types, precision and wording keywords → `formatters.md` "Numbers in words".
 
 **Divide a periodic total into installments** — all three cells reference the same source field:
 ```

@@ -11,7 +11,7 @@ In-template options are placed anywhere in the template — body, header, footer
 | `{o.preReleaseFeatureIn=VERSION}` | Activates pre-release features up to the given version code (e.g. `5011000`) — see the section below |
 | `{o.timezone=Europe/Paris}` | Forces the timezone used by date formatters; overrides the API option (v5.4.3+) |
 | `{o.lang=en-US}` | Forces the language/locale; overrides the API option. Accepts upper or lowercase (v5.4.3+) |
-| `{o.converter=L}` | Forces the conversion engine: `L` = LibreOffice, `O` = OnlyOffice, `C` = Chromium, `I` = Carbone ICE (DOCX to PDF only, v5.14.0+). Only these four values are accepted (v5.4.3+) |
+| `{o.converter=L}` | Forces the conversion engine: `L` = LibreOffice, `O` = OnlyOffice, `C` = Chromium, `I` = Carbone ICE (DOCX and ODT to PDF, v5.14.0+). Only these four values are accepted (v5.4.3+) |
 | `{o.exportFormattedValuesAsText=true}` | Forces `:formatN` to output localized text strings instead of native XLSX number format. **XLSX templates only** (v5.4.3+) |
 | `{o.styleSource=templateOrVersionId}` | Apply style from another DOCX/ODT template to a Markdown template. The style template can itself contain Carbone tags. Styles applied: headings, tables, headers, footers. Effective only when converting Markdown to DOCX, ODT, or PDF (v5.8.0+) |
 
@@ -27,7 +27,7 @@ It is a **threshold**: everything introduced up to that version is enabled, ever
 |---|---|
 | `4022011` | v4 `:set`, `:transform`, whitespace in JSON key names |
 | `4025011` | All v4 pre-release features up to v4.25.11 |
-| `5002000` | `:html` headings `<h1>`–`<h6>`, tables, `break-before` / `break-after` page breaks |
+| `5002000` | `:html` headings `<h1>`–`<h6>`, tables, `break-before` / `break-after` page breaks; lookup / JOIN between arrays (`loops-advanced.md`) |
 | `5004002` | Direct object access combined with object iteration on the same object |
 | `5011000` | The `:html` rich elements and parser fixes of v5.11.0 and v5.13.0 (list → `advanced-features.md`) |
 

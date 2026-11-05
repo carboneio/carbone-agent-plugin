@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.0
+- Updated for Carbone v5.17.0 (tracked version 5.14.0 → 5.17.0)
+- New formatter `:toWord` (v5.16.0) in `formatters.md`: numbers in words in 50 languages — cardinal `W`, ordinal `O`, amount with currency `C`, precision rules, wording keywords and error cases; quick-reference line in `SKILL.md` §5, "amount in words" invoice example in `practical-examples.md`, trigger phrase in the skill description
+- `:formatC` default precision follows ISO 4217 (v5.16.0): no decimal for JPY and the other zero-decimal currencies, three for JOD, LYD and TND; new ISO 4217 codes accepted by `:formatC`, `:convCurr` and `:toWord` (XAF, XCG replacing ANG, CDF, STN, SHP, SVC, MRU, SLE, VES, VED, ZWG)
+- `:convCRLF` supports XLSX templates (v5.17.0), line breaks show with the cell's Wrap text option — `formatters.md` row and example, new section in `xlsx-tips.md`
+- Formatter argument limits (v5.14.4), rejected rather than reduced: `:formatN`/`:formatC` precision 40, `:padl`/`:padr` length 10,000, barcode `width`/`height` 1,000 mm and 25 million pixels with `scale`, `textsize` 100 pt — `formatters.md` rows and `SKILL.md` §8b
+- `in-template-options.md`: Carbone ICE (`{o.converter=I}`) converts DOCX and ODT to PDF
+- `html-templates.md`: `<carbone-pdf-options>`, `<carbone-pdf-header>` and `<carbone-pdf-footer>` are ignored when the output is an image; `page-ranges` accepts `"1-5"` and `"2"` (v5.15.0)
+- `formatters.md`: the 26 table examples written as a literal followed by a formatter (`'Hello':upperCase`) are now real tags with a JSON input and the output (`{d.name:upperCase}` — `"Hello"` → `"HELLO"`), so no example shows a syntax Carbone does not accept; the convention is stated once above the first table
+- Examples corrected after a full review of every page
+
 ## 2.0.0
 - The Carbone plugin now bundles the skill and the hosted Carbone MCP server, for any AI agent, including Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI and Antigravity
 - The repository is renamed carbone-agent-plugin

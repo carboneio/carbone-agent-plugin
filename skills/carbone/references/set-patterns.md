@@ -83,8 +83,8 @@ Coerce a numeric string to a real number by running it through any arithmetic fo
 
 ---
 
-## Retrieve the last item from a child list using iterator index
-Use `aggMax` on `.i` to find the index of the last child item, store it, then use as a filter:
+## Retrieve the child with the highest id, per parent
+`aggMax(.i)` takes the highest `id` among each parent's children (partitioned by the parent index `.i`), stores it on the parent, then a filter reads that child. It is the last child only when ids increase along the list:
 ```
 {d.items[].children[].id:aggMax(.i):set(..lastChildIdx)}
 {d.items[i].children[id=..lastChildIdx].label}
@@ -105,15 +105,17 @@ Replace `3` with your column count. Each `c.grid[i]` will have a `cells[]` array
 ---
 
 ## Multi-level JSON restructuring — pair two sibling arrays into a combined child list
-Use `cumCount(.i)` to generate a unique ID per item within the same parent, then use that ID as the join key to align the two sibling arrays:
+Use `cumCount(.i)` to number the items of each sibling array within the same parent (the count restarts for every parent), then use that number as the join key to align the two arrays:
 ```
-{d.source.items[].name:set(c.output[key=.key].key)}
-{d.source.items[].children[]:set(c.output[key=...key].childItems[])}
+{d.source.items[].key:set(c.output[key=.key].key)}
+{d.source.items[].children[]:set(c.output[key=..key].childItems[])}
 {d.source.items[].sideA[].value:cumCount(.i):set(.id)}
-{d.source.items[].sideA[].id:set(c.output[key=...key].pairs[id=.id].id)}
-{d.source.items[].sideA[].value:set(c.output[key=...key].pairs[id=.id].before)}
-{d.source.items[].sideB[].value:set(c.output[key=...key].pairs[id=.id].after)}
+{d.source.items[].sideB[].value:cumCount(.i):set(.id)}
+{d.source.items[].sideA[].id:set(c.output[key=..key].pairs[id=.id].id)}
+{d.source.items[].sideA[].value:set(c.output[key=..key].pairs[id=.id].before)}
+{d.source.items[].sideB[].value:set(c.output[key=..key].pairs[id=.id].after)}
 ```
+With two parents `K1` (children ×2, sideA `a1`,`a2`, sideB `b1`,`b2`) and `K2` (one of each), `c.output` holds `K1` with 2 `childItems` and pairs `a1/b1`, `a2/b2`, then `K2` with pairs `a3/b3`. Both sibling arrays must be numbered, and `..key` (two dots) reaches the parent from a child value — a third dot overshoots and sends everything into one keyless entry.
 
 ---
 
@@ -124,7 +126,7 @@ Extract the grouping key into a local variable first, then build the grouped str
 {d.records[].p:set(c.groups[price=.p].price)}
 {d.records[].price.volume:set(c.groups[price=..p].volume)}
 {d.records[].label:set(c.groups[price=.p].label)}
-{d.records[]:print(.qty.qty):aggSum(.p):set(c.groups[price=.p].total)}
+{d.records[]:print(.price.qty):aggSum(.p):set(c.groups[price=.p].total)}
 {c.groups[].total:mul(.price):set(.grandTotal)}
 ```
 
@@ -176,7 +178,7 @@ Use `[0]`, `[1]`, `[2]` etc. to access each segment. Useful when a composite key
 {d.items:len:div(2):floor:set(d.midIndex)}
 {d.midIndex:add(1):set(d.midIndex2)}
 ```
-`d.items` is the split array, `d.midIndex` is the floor-divided midpoint, `d.midIndex2` is one past the midpoint. Reference `{d.items[d.midIndex]}` etc. to read slices.
+`d.items` is the split array, `d.midIndex` is the floor-divided midpoint, `d.midIndex2` is one past the midpoint. Use them in conditions and arithmetic (`{d.items:len:ifGT(d.midIndex):show(long):elseShow(short)}`). A stored number cannot be used as an array index: `{d.items[d.midIndex]}` is rejected and `{d.items[i=d.midIndex]}` prints nothing — a bracket index is a literal (`[i=2]`, `[i=-1]`) or a filter on an attribute.
 
 ---
 

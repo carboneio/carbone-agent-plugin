@@ -83,7 +83,7 @@ Emit this tag on the paragraph that holds the page break:
 - `:ifEQ(.i)` → true only on the last iteration (`.i` = current loop index)
 - `:drop(p)` → deletes that paragraph, and its page break, when true
 
-Shorter form (filtered loop tag): `{d.list[i, i=-1]:ifNEM:drop(p)}` — `[i, i=-1]` matches only the last element, `:ifNEM` fires the `:drop(p)` there.
+Shorter form (filtered loop tag): `{d.list[i, i=-1].id:drop(p)}` — `[i, i=-1]` matches only the last element, so the paragraph is dropped there. The tag must read an attribute that is always present (here `id`): on an object with no attribute, or a missing one, nothing is dropped.
 
 **No-tag alternative**: set "Page break before" on the loop's first paragraph (Word: Paragraph → Line and Page Breaks; LibreOffice: Paragraph → Text Flow → Breaks → Page / Before). The break then leads each item, so none trails the last.
 
@@ -96,7 +96,7 @@ Swap `list` for the real array path (it appears twice).
 **There is no Carbone tag for this.** Carbone drops a merged cell that shares a table with a row loop — the merged column is flattened into rows. The fix is a layout one: put the loop in an inner table so the merge lives in the outer table.
 
 1. Outer table: one row, two or more columns. Merged-cell content goes in the first column.
-2. Next column: insert an **inner** table and put the loop there — `{d.rows[i]...}` / `{d.rows[i+1]...}`.
+2. Next column: insert an **inner** table and put the loop there, one inner row per item — first inner row `{d.rows[i].ref}` `{d.rows[i].qty}`, second inner row `{d.rows[i+1].ref}`.
 3. Make the inner table flush so the nesting is invisible:
    - **Word**: inner table → Table Properties → Table → Options… → left/right cell margins = `0`.
    - **LibreOffice**: inner table → Table Properties → Borders → padding/spacing = `0`.

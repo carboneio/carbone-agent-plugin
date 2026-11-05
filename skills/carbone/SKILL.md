@@ -7,14 +7,15 @@ description: >
   aliases, and mapping a JSON dataset onto a template. Trigger on: the tag syntax {d.} {c.} {#alias}
   {$alias} {t()} {o.} or any :formatter chain; a template error such as a missing [i+1]; whether a
   format supports a feature or what it converts to; filling a PDF form (AcroForm); adding a chart,
-  barcode or dynamic image to a document; dynamic Excel formulas; upgrading between Carbone versions;
+  barcode or dynamic image to a document; writing a number or an amount in words; dynamic Excel
+  formulas; upgrading between Carbone versions;
   and any request to build an invoice, contract or report from JSON, mail-merge data into a document,
   fill a template with data, or convert a document (HTML or Markdown to PDF, DOCX to PDF).
 license: Apache-2.0
 metadata:
   author: carboneio
-  version: "2.0.0"
-  carbone_version: "5.14.0"
+  version: "2.1.0"
+  carbone_version: "5.17.0"
   repository: https://github.com/carboneio/carbone-agent-plugin
 ---
 
@@ -177,6 +178,8 @@ For the **complete formatter reference**, read `references/formatters.md`.
 
 **Currency**: `:formatC(precisionOrFormat, targetCurrency)` `:convCurr(target, source)`
 
+**Number in words**: `:toWord(type, precision, keywords…)` — `W` cardinal (default), `O` ordinal, `C` amount with currency, in the `lang` language (v5.16.0+)
+
 **Date**: `:formatD(patternOut, patternIn)` `:addD(amount, unit)` `:subD(amount, unit)` `:startOfD(unit)` `:endOfD(unit)` `:diffD(toDate, unit, patternFrom, patternTo)`
 
 **Interval**: `:formatI(patternOut, patternIn)` — converts ms/seconds/ISO durations to human-readable
@@ -280,7 +283,7 @@ Insert a placeholder image in the template, then write the Carbone tag in the im
 ```
 {d.imageUrl}
 ```
-Supports public URLs and Base64 Data URIs. Compatible with PDF, ODT, ODS, ODP, ODG, PPTX, XLSX, DOCX.
+Supports public URLs and Base64 Data URIs. Templates: DOCX, XLSX, PPTX, ODT, ODS, ODP, ODG, HTML, Markdown (PDF as output only — a PDF form template has no pictures).
 
 **`:imageFit(option)`** — controls how the replacement image is resized to fit the placeholder (DOCX/ODT only):
 - `fillWidth` (default) — fills the full width while keeping aspect ratio
@@ -300,11 +303,11 @@ Insert a placeholder image, write in its **alternative text** (in HTML and Markd
 {d.code:barcode(qrcode, svg:true)}              ← vector SVG, better print quality
 {d.code:barcode(ean13, width:200, height:100)}  ← custom dimensions (mm)
 ```
-Common barcode options (second argument, `key:value` format): `width`, `height`, `scale` (1–10), `includetext` (true/false), `textsize`, `textxalign` (left/center/right/justify), `textyalign` (below/center/above), `rotate` (N/R/L/I), `barcolor` (#RRGGBB), `textcolor` (#RRGGBB), `backgroundcolor` (#RRGGBB), `eclevel` (L/M/Q/H — QR only).
+Common barcode options (second argument, `key:value` format): `width`, `height`, `scale` (1–10), `includetext` (true/false), `textsize`, `textxalign` (left/center/right/justify), `textyalign` (below/center/above), `rotate` (N/R/L/I), `barcolor` (#RRGGBB), `textcolor` (#RRGGBB), `backgroundcolor` (#RRGGBB), `eclevel` (L/M/Q/H — QR only). Limits: `width`/`height` max 1,000 mm (25 million pixels with `scale`), `textsize` max 100 pt — a larger value is rejected (v5.14.4+).
 Carbone supports 107 barcode types. If the barcode value is missing or invalid, Carbone inserts a default SVG (square with a cross).
 
 ### 8c. Colors (ENTERPRISE, v4.17+)
-`:color(scope, type)` — injects color from data into the document element. The tag prints nothing. Color must be 6-digit hex (e.g. `FF0000` or `#FF0000`). Scopes: `p`, `row`, `cell`, `shape`, `part`. Types: `text` (default), `highlight`, `background`, `border`. Templates: DOCX, ODT, ODS, ODP, PPTX, HTML (not a PDF template).
+`:color(scope, type)` — injects color from data into the document element. The tag prints nothing. Color must be 6-digit hex (e.g. `FF0000` or `#FF0000`). Scopes: `p`, `row`, `cell`, `shape`, `part`. Types: `text` (default), `highlight`, `background`, `border`. Templates: DOCX, ODT, ODS, ODP, PPTX, HTML, Markdown, SVG (PDF as output only, not a PDF template).
 ```
 {d.statusColor:color(row, background)}
 {d.textHex:ifEQ('ok'):show(007700):elseShow(FF0000):color(p)}
@@ -316,10 +319,10 @@ For full scope/type tables, limitations, and `:bindColor` (legacy) → read `ref
 Basic text, lists, links and images work out of the box; headings and tables need `{o.preReleaseFeatureIn=5002000}` and the richer elements need `5011000`. For the element list, CSS, options and themes (`tabletheme`, `headingtheme`, `quotetheme`), page breaks, entities, and common patterns → `references/advanced-features.md` "`:html` Formatter — Full Reference".
 
 ### 8e. Hyperlinks (ENTERPRISE, v3+)
-Set the URL of a hyperlink (in your editor) to a Carbone tag, e.g. `{d.url}`. Works in DOCX, XLSX, PPTX, ODT, ODS, ODP, ODG. Use `:defaultURL('fallback')` if the URL may be invalid. Edge cases (XLSX syntax, mixed URLs) → `references/advanced-features.md`.
+Set the URL of a hyperlink (in your editor) to a Carbone tag, e.g. `{d.url}`. Works in DOCX, XLSX, PPTX, ODT, ODS, ODP, ODG, HTML, Markdown. Use `:defaultURL('fallback')` if the URL may be invalid. Edge cases (XLSX syntax, mixed URLs) → `references/advanced-features.md`.
 
 ### 8f. i18n / Translations
-- Static text: `{t('key')}` in template + localization dictionary JSON
+- Static text: `{t(key)}` in template + localization dictionary JSON — no quotes (they would become part of the key); spaces are allowed, `{t(key with space)}`. If a text editor splits the spaced key and the tag stops resolving, wrap it in `:print`: `{d:print('{t(key with space)}')}`
 - Dynamic value: `{d.status:t}` — looks up the value in the translation dictionary
 - Use locale-aware formatters for numbers/dates/currencies: `:formatN`, `:formatD`, `:formatC`, `:formatI`
 
@@ -396,11 +399,11 @@ Carbone tags and Excel formulas must be in **separate cells**. For totals after 
 ### Removing the trailing comma/separator in a loop
 Place the separator in its own paragraph alongside a drop tag. The tag drops that paragraph only for the last item (`i=-1`); for all earlier items the paragraph is kept:
 ```
-{d.items[i].name}
+{d.items[i]}
 ; {d.items[i, i=-1]:drop(p)}     ← separator paragraph — dropped for the last item
-{d.items[i+1].name}
+{d.items[i+1]}
 ```
-Data `["A","B","C"]` → outputs `A`, `;`, `B`, `;`, `C` (no trailing semicolon).
+Data `["A","B","C"]` → outputs `A`, `;`, `B`, `;`, `C` (no trailing semicolon). With an array of objects, the drop tag must read an attribute that is always present: `{d.items[i, i=-1].id:drop(p)}`.
 
 Alternatives when you only need a flat string — no loop required:
 ```
@@ -458,9 +461,9 @@ When asked to validate a Carbone tag, check:
 17. **`:isImage` vs `:imageFit`** — `:isImage` is a private internal method; use `:imageFit(contain|fill|fillWidth)` for image resizing
 18. **Double quotes are never valid in tags** — use single quotes everywhere: formatter args `{d.date:formatD('LL')}` and array filter values `[key='value']`. Double quotes in either location cause a rendering error.
 19. **Space in `show()` without quotes** — `show(40 FT)` outputs `40FT`; use `show('40 FT')` — unquoted spaces are dropped
-20. **Attributes after `[i+1]` are ignored** — `{d.arr[i+1].name}` never reads `.name`; use plain `{d.arr[i+1]}`
+20. **Attributes after `[i+1]` are ignored** — the marker only closes the loop and prints nothing, so `{d.arr[i+1].name}` and `{d.arr[i+1]}` render identically; both are valid, never expect `.name` to be printed there
 21. **Missing `.` between `[index]` and next key** — `{d.items[0]products.value}` gives empty output; must be `{d.items[0].products.value}`
-22. **Alias must start with a data path or a filter expression** — `{#flag=0:ifEM():hideBegin}` is invalid because `0` is not a Carbone data path. Aliases normally start with `d.`, `c.`, or a `$param` reference. Exception: a **filter-expression alias** (used inside `[]` brackets to share a reusable filter) starts with a bare field name, e.g. `{#incCrit = criticality.code!='-1'}` — see `references/aliases.md` "Filter aliases"
+22. **Alias must start with a data path or a filter expression** — `{#flag=0:ifEM():hideBegin}` is invalid because `0` is not a Carbone data path. Aliases normally start with `d.`, `c.`, or a `$param` reference. Exception: a **filter-expression alias** (used inside `[]` brackets to share a reusable filter) starts with a bare field name, e.g. `{#incCrit = criticality.code!='-1'}` — see `references/aliases.md` "Alias as filter"
 23. **Never use spaces inside a tag** — Carbone trims spaces between any structural elements (`{`, `d`, `.`, field names, `[]`, `:`, `}`, etc.) so `{d.photo :imageFit(contain)}` technically works, but this is bad practice and should never be written intentionally
 24. **Double colon `::` is invalid** — `{d.value:aggSum::formatN(2)}` creates an empty formatter name and will cause a rendering error; remove the extra colon
 25. **An alias cannot reference another alias** — neither as the right-hand side of a declaration (`{#x = $y}`) nor as a formatter argument inside one (`{#x = d.value:ifEM:show($y)}`). An alias declaration's right-hand side must be built only from `d.`/`c.` data paths or a filter expression — no `{$alias}` references anywhere inside. To pull an aliased object's sibling into a condition argument, use a relative path (`.field` / `..field`) instead
@@ -482,7 +485,7 @@ Read these when the user's question goes beyond what SKILL.md covers:
 - `references/format-support.md` — the 15 input formats, which enterprise feature works in which, output formats, CSV/TXT/XML and IDML templates, format-specific limitations. Read when user asks which format to use or whether a feature works in a given format.
 - `references/in-template-options.md` — all `{o.}` in-template options with descriptions and version requirements, plus how `preReleaseFeatureIn` version codes work (including v4 compatibility mode). Read when user asks about timezone, lang, converter, or pre-release flags.
 - `references/advanced-features.md` — full `:color` reference, `:html` options and page breaks, hyperlink edge cases, SVG templates, ODT forms, native charts. Read when user asks about color formatting, SVG, ODT forms, or ECharts.
-- `references/xlsx-tips.md` — computing totals in Excel/ODS when Carbone injects rows: `INDIRECT`+`ROW`, aggregators, `MATCH`/`INDEX`. Read when user asks about Excel formulas in spreadsheet templates.
+- `references/xlsx-tips.md` — computing totals in Excel/ODS when Carbone injects rows: `INDIRECT`+`ROW`, aggregators, `MATCH`/`INDEX`, line breaks inside a cell. Read when user asks about Excel formulas in spreadsheet templates.
 - `references/docx-tips.md` — DOCX/ODT header/body/footer section rules, cross-section loop values, the floating-text-box pattern, dynamic page break in a loop without a trailing blank page, keeping merged cells inside a table loop, horizontal (newspaper-column) repetition in LibreOffice tables. Read when user asks about tags in Word headers/footers, a "missing i+1" error in a header, page breaks inside loops, merged cells in loops, or horizontal table repetition.
 - `references/upgrade-guide.md` — upgrading Carbone versions: breaking changes, `carbone-version` header, `templateId` vs `versionId`. Read when user asks about upgrading or migration.
 - `references/practical-examples.md` — real-world combinations: conditional visibility (optional blocks, table/row hiding, NaN guard, range checks, checkboxes), date formatting, aggregation patterns, complement data, chained formatters, `..` in formatter args. Read when user asks for practical examples, real-world patterns, or complex conditional logic.
