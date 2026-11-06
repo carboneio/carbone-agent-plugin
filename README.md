@@ -282,7 +282,7 @@ You sign in with your Carbone account when the assistant first calls Carbone. No
 ## What data it sends
 
 - Templates and data go to the Carbone API only when a tool is called.
-- Your generated document comes back in the conversation. PDF and Office files arrive as a download link that works once and expires after 1 hour; Carbone deletes the document as soon as it is downloaded, or after 1 hour.
+- Generated documents come back as a download link, valid once and for 1 hour. Carbone deletes them after download.
 - The skill is a set of instructions read by the assistant. It sends nothing on its own.
 
 Read the [privacy policy](https://carbone.io/company/privacy-policy.html).
