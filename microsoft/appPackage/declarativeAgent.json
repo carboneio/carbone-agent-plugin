@@ -2,9 +2,9 @@
   "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.8/schema.json",
   "version": "v1.8",
   "name": "Carbone",
-  "description": "Generate PDF, Word, Excel and PowerPoint documents from your templates and data.",
+  "description": "Fills your company's Word, Excel, PowerPoint and HTML templates with data from the chat and returns PDF, Word, Excel or PowerPoint files: invoices, quotes, contracts, certificates, statements, labels and reports, one at a time or in batches. Also designs new templates, manages your Carbone template library, and protects PDFs with watermarks or passwords.",
   "disclaimer": {
-    "text": "This agent uses AI to prepare templates, data and documents. AI-generated content may be inaccurate: review every document before you share or send it. To report harmful or inappropriate content, email support@carbone.io."
+    "text": "Copilot prepares data and new templates with AI and can make mistakes; Carbone renders your template exactly as designed. Check every value before you share or send a document. To report harmful or inappropriate content, email support@carbone.io."
   },
   "instructions": "$[file('instruction.txt')]",
   "capabilities": [
@@ -19,52 +19,48 @@
   ],
   "conversation_starters": [
     {
-      "title": "Fill my invoice template",
-      "text": "Fill my Invoice template for Northwind Traders: 3 consulting days at 850 EUR and 1 training session at 1200 EUR, issued today, due in 30 days."
+      "title": "Invoice from a few details",
+      "text": "Fill my Invoice template: invoice INV-2026-0142 for Northwind Traders, 12 Rue de la Paix, 75002 Paris, France, VAT 20%. 3 consulting days at 850 EUR and 1 training session at 1,200 EUR, issued today, due in 30 days."
     },
     {
       "title": "Quote from deal notes",
-      "text": "Create a PDF quote with page numbers from these deal notes: Contoso Ltd, 25 Pro licenses at 49 USD per month for 12 months, 10% discount, valid until the end of next month."
+      "text": "Turn these deal notes into a PDF quote with my Sales Quote template: Contoso Ltd, 25 Pro licenses at 49 USD per user per month for 12 months, 10% discount, valid until the end of next month."
     },
     {
-      "title": "My template library",
-      "text": "Show my stored templates by category, with their tags and the fields each one expects."
+      "title": "Statement of account",
+      "text": "Create a statement of account as of today for Northwind Traders with my Customer Statement template: 2026-09-05 INV-0131 invoice 4,250.00 EUR; 2026-09-28 PAY-0131 payment -4,250.00; 2026-10-03 INV-0138 invoice 3,900.00; 2026-10-30 INV-0142 invoice 3,750.00."
     },
     {
-      "title": "Certificates for a list",
-      "text": "Create a PDF training certificate for each person: Alice Martin, Bruno Costa, Chen Wei. Course: Data Privacy Basics, completed on 2026-10-15."
+      "title": "Certificates for a team",
+      "text": "Use my Training Certificate template to create one certificate per person in a single PDF: Alice Martin, Bruno Costa, Chen Wei. Course: Data Privacy Basics, completed today."
     },
     {
-      "title": "Confidential PDF",
-      "text": "Render my Invoice template with its stored sample data as a PDF with a CONFIDENTIAL watermark and an open password that I will give you."
+      "title": "NDA with optional clause",
+      "text": "Prepare my Mutual NDA template for Tailspin Toys Inc. (United Kingdom): effective on the first of next month, 3-year term, governed by English law, with the non-solicitation clause. Give me Word and PDF versions."
+    },
+    {
+      "title": "Invoice in French and English",
+      "text": "Generate my Invoice template from its sample data in French and in English, with translated labels and local date and amount formats."
+    },
+    {
+      "title": "Password-protected PDF",
+      "text": "Generate my Invoice template from its sample data as a PDF with a CONFIDENTIAL watermark and an opening password that I will give you."
+    },
+    {
+      "title": "Labels with QR codes",
+      "text": "Create printable shipping labels with a QR code of each tracking number: TRK-48213 for Contoso, Lyon; TRK-48214 for Fabrikam, Berlin; TRK-48215 for Litware, Madrid."
     },
     {
       "title": "Reusable offer letter",
-      "text": "Design a reusable offer letter template with candidate name, job title, start date and salary, show me a sample PDF, then save it to my library."
+      "text": "Design a reusable offer letter template with candidate name, job title, start date and salary, show me a sample PDF, then save it to my library in the hr category."
     },
     {
-      "title": "New template version",
-      "text": "Open my Invoice template, add a payment terms line under the total, and save it as a new version."
+      "title": "My template library",
+      "text": "Show my templates grouped by category with their tags, then list the fields my Invoice template expects."
     },
     {
-      "title": "Organize a template",
-      "text": "Add the tags billing and 2026 to my Invoice template and move it to the finance category."
-    },
-    {
-      "title": "French and English versions",
-      "text": "Generate my Invoice template in French and in English from its sample data, with local date and amount formats."
-    },
-    {
-      "title": "Markdown to Word",
-      "text": "Convert this Markdown to a Word document: # Q3 review - Revenue up 12 percent - Two new clients signed - Next step: hire a sales lead"
-    },
-    {
-      "title": "Fix empty fields",
-      "text": "My document shows an empty client name. The tag is {d.customer.name} and my data has client.name. What is wrong and how do I fix it?"
-    },
-    {
-      "title": "What my account supports",
-      "text": "Check that the Carbone service is up, then list the output formats, converters and PDF options I can use."
+      "title": "Why is a field empty?",
+      "text": "My document shows an empty client name. The template uses {d.customer.name} and my data has client.name. What is wrong and how do I fix it?"
     }
   ],
   "actions": [
