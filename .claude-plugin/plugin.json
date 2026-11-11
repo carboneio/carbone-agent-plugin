@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "carbone",
+  "displayName": "Carbone",
+  "version": "2.2.0",
+  "description": "Generate PDF, Word, Excel and PowerPoint documents from your own templates and data, from one file to large batches. One universal templating language for Office, HTML and Markdown, a production-ready engine, 100+ formats, and the Carbone skill to design templates.",
+  "author": {
+    "name": "Carbone",
+    "email": "support@carbone.io",
+    "url": "https://carbone.io"
+  },
+  "homepage": "https://carbone.io/documentation/developer/ai/mcp.html",
+  "repository": "https://github.com/carboneio/carbone-agent-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "carbone",
+    "pdf",
+    "docx",
+    "xlsx",
+    "pptx",
+    "templates",
+    "document-generation",
+    "mail-merge",
+    "invoice",
+    "report",
+    "json-to-pdf",
+    "html-to-pdf",
+    "contract",
+    "certificate",
+    "batch-generation"
+  ],
+  "icon": "./assets/icon.svg",
+  "documentationUrl": "https://carbone.io/documentation/developer/ai/mcp.html",
+  "supportUrl": "https://help.carbone.io",
+  "privacyPolicyUrl": "https://carbone.io/company/privacy-policy.html",
+  "termsOfServiceUrl": "https://carbone.io/company/terms-of-service.html"
+}
