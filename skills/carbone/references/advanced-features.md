@@ -346,7 +346,7 @@ A nested template that uses `:appendTemplate` itself fails with `Circular depend
 
 ---
 
-## Electronic signature fields — `:sign` (ENTERPRISE, BETA, v5+)
+## Electronic signature fields — `:sign` (ENTERPRISE, v5+)
 
 `:sign` marks where a person signs, dates or initials the document; the tag prints nothing. The value can be any JSON — store what the e-signature provider needs to invite the signer:
 ```

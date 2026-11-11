@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- `:appendTemplate` is available on Cloud and On-Premise (`formatters.md`)
+- `:sign` is no longer beta (`SKILL.md` §8h, `formatters.md`, `advanced-features.md`)
+
 ## 2.2.0
 - Updated for Carbone v5.18.0 (tracked version 5.17.0 → 5.18.0)
 - XLSX pre-release `{o.preReleaseFeatureIn=5018000}`: formulas, merged cells, conditional formatting, validations, tables, charts and pivot tables follow loop rows. `xlsx-tips.md` rewritten around it; `in-template-options.md` row; `SKILL.md` §1, §8l, §9

@@ -343,7 +343,7 @@ Attach a file inside a PDF (Factur-X, ZUGFeRD) — `:attachFile(name, type)`, `n
 ```
 **PDF output only** — silently ignored if the final render format is DOCX/XLSX/ODT/etc. Only the following render options are forwarded to the nested template: `lang`, `timezone`, `currencySource`, `currencyTarget`, `currencyRates`, `converter`, `enum`, `translations`, and complement data (`{c.}`). Other options (`hardRefresh`, `useHighPrecisionArithmetic`, `exportFormattedValuesAsText`, `preReleaseFeatureIn`, …) are **not** forwarded. A nested template cannot itself call `:appendTemplate` (no recursion).
 
-### 8h. Digital signatures (ENTERPRISE, BETA — v5+)
+### 8h. Digital signatures (ENTERPRISE, v5+)
 Marks a signature field; the tag prints nothing. Render to PDF with the `carbone-version: 5` header: the response gives each field's value, page and x/y. Write the tag in Arial or Calibri, opening `{` in the background color — rules → `references/advanced-features.md`:
 ```
 {d.signatureBuyer:sign}
