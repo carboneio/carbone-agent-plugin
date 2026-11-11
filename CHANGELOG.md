@@ -3,6 +3,7 @@
 ## Unreleased
 - `:appendTemplate` is available on Cloud and On-Premise (`formatters.md`)
 - `:sign` is no longer beta (`SKILL.md` §8h, `formatters.md`, `advanced-features.md`)
+- New `claude-directory` branch, rebuilt by the release action, for Anthropic's plugin directory: only the files Claude reads
 
 ## 2.2.0
 - Updated for Carbone v5.18.0 (tracked version 5.17.0 → 5.18.0)

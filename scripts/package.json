@@ -10,7 +10,8 @@
   "scripts": {
     "validate": "node validate.mjs",
     "bump-version": "node bump-version.mjs",
-    "build": "node build-zips.mjs"
+    "build": "node build-zips.mjs",
+    "build-claude-branch": "node build-claude-branch.mjs"
   },
   "devDependencies": {
     "ajv": "8.20.0",

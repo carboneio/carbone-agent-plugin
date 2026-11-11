@@ -37,5 +37,5 @@
 3. Update `CHANGELOG.md` and `extensions.com.openai.publication.release_notes` in `plugin.json`.
 4. Run `npm --prefix scripts run validate` (or `node scripts/validate.mjs`) and fix every error. Check 10 (`claude plugin validate --strict`) is skipped locally unless the Claude Code CLI is installed; CI runs it with `--require-claude`. `--offline` skips the URL check.
 5. Commit, tag `v<version>` and push the tag.
-6. The release action validates again, checks the tag equals the shared version, then builds and attaches `carbone.skill` and `carbone-chatgpt-plugin.zip` to the GitHub release. Check both files are there.
+6. The release action validates again, checks the tag equals the shared version, then builds and attaches `carbone.skill` and `carbone-chatgpt-plugin.zip` to the GitHub release. Check both files are there. It then commits the Claude plugin files to the `claude-directory` branch (`scripts/build-claude-branch.mjs`), which Anthropic's plugin directory tracks: the directory refuses the tooling and the other assistants' manifests on `main`. Never commit to that branch by hand.
 7. Upload `carbone-chatgpt-plugin.zip` to the Carbone plugin in OpenAI's dashboard and submit it for review. MCP tool changes need no new ZIP; listing, skill or translation changes do.

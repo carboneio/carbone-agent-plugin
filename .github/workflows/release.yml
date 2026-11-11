@@ -51,3 +51,20 @@ jobs:
           files: |
             dist/carbone.skill
             dist/carbone-chatgpt-plugin.zip
+
+      # Anthropic's plugin directory tracks the claude-directory branch: the Claude plugin files
+      # only, without the tooling and the other assistants' manifests it refuses.
+      - name: Update the claude-directory branch
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1'
+        run: |
+          if git ls-remote --exit-code --heads origin claude-directory > /dev/null; then
+            git fetch --no-tags --depth=1 origin claude-directory:claude-directory
+          fi
+          node scripts/build-claude-branch.mjs --commit
+          claude plugin validate dist/claude-directory --strict
+          git push origin claude-directory
