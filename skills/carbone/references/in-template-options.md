@@ -30,6 +30,6 @@ It is a **threshold**: everything introduced up to that version is enabled, ever
 | `5002000` | `:html` headings `<h1>`–`<h6>`, tables, `break-before` / `break-after` page breaks; lookup / JOIN between arrays (`loops-advanced.md`) |
 | `5004002` | Direct object access combined with object iteration on the same object |
 | `5011000` | The `:html` rich elements and parser fixes of v5.11.0 and v5.13.0 (list → `advanced-features.md`) |
-| `5018000` | XLSX templates: formulas, merged cells, conditional formatting, data validations, tables, charts, pivot tables, hyperlinks, named ranges, the print area and page breaks follow the rows added by loops (→ `xlsx-tips.md`) |
+| `5018000` | XLSX templates: formulas, merged cells, conditional formatting, data validations, tables, charts, pivot tables, hyperlinks, named ranges, the print area and page breaks follow the rows added by loops (→ `xlsx-templates.md`) |
 
 **Below `5000000` = v4 compatibility (v5.13.0+)**: any value under `5000000` also turns off v5's missing-`[i+1]` detection, so legacy templates that v4 tolerated still render. It disables every v5 feature at the same time — use it to unblock a migration, not as a permanent setting (→ `upgrade-guide.md`).

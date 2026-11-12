@@ -1,4 +1,4 @@
-# Carbone XLSX/ODS: Spreadsheet Tips
+# Carbone XLSX/ODS Templates
 
 Read this file when the user asks where to write tags in an Excel sheet (cells mixing text and tags, the `[i]`/`[i+1]` loop rows, sorted, filtered, nested and horizontal loops, `:drop(row)` placement, where to put an `{o.}` option), Excel formulas or totals below a loop, formulas, merged cells, conditional formatting, data validation, tables, charts, pivot tables or hyperlinks that must follow the rows Carbone adds (XLSX pre-release `5018000`), merging identical cells of a column with `:mergeCell`, why a cell's percentage/currency/accounting/date format is not applied (native number vs text), referencing injected rows with `INDIRECT`/`MATCH`/`INDEX`, frozen panes, pictures, barcodes, headers/footers, page setup for PDF or sheet names in XLSX, line breaks inside a cell, or generating one sheet per array item.
 
@@ -110,7 +110,7 @@ Tested template (no pre-release tag): `A4:B4` and `A5:B5` merged for the product
 - It merges the rows as printed, so it works with sorted and filtered loops and `:drop(row)`. Only **adjacent** identical values merge: sort the loop when they are not already grouped in the data.
 - A cell merged horizontally in the template (`C4:D4`) keeps its width and grows down, which is useful for the parent cells of a nested loop.
 - A loop that repeats two rows per item is not merged: the rows must be consecutive.
-- XLSX templates only. For merged cells in a DOCX/ODT table loop → `docx-tips.md`.
+- XLSX templates only. For merged cells in a DOCX/ODT table loop → `docx-templates.md`.
 
 ---
 

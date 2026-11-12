@@ -216,7 +216,7 @@ Reference `{d.balanceAbs}` for the magnitude display, then use a condition on th
 ```
 {d.value:formatN}     ← cell formatted 0.00% → 0.032 renders as 3.20%
 ```
-Do NOT pre-multiply by 100 here: the cell format already does ×100 and appends `%`. The cell format controls how many decimals are shown; the precision argument to `:formatN(...)` is **ignored in XLSX/ODS** (see `references/xlsx-tips.md`), so `:formatN` and `:formatN(0)` behave identically. Use the `:mul(100):append('%')` text approach above for all other template formats (anything that isn't XLSX/ODS), or for a plain-text XLSX/ODS cell with no percentage format.
+Do NOT pre-multiply by 100 here: the cell format already does ×100 and appends `%`. The cell format controls how many decimals are shown; the precision argument to `:formatN(...)` is **ignored in XLSX/ODS** (see `references/xlsx-templates.md`), so `:formatN` and `:formatN(0)` behave identically. Use the `:mul(100):append('%')` text approach above for all other template formats (anything that isn't XLSX/ODS), or for a plain-text XLSX/ODS cell with no percentage format.
 
 ---
 

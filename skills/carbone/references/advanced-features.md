@@ -21,7 +21,7 @@ Phone photos (DOCX, v5.6.0+): `{d.photo:autoOrient:imageFit(contain)}` rotates a
 
 **Loops of pictures**: one temporary picture in the repeated row, with the item's tag in its alt text (`{d.damages[i].photo}`), is enough. Whether the loop repeats it depends on the format:
 - **DOCX**: only a picture **In Line with Text** is repeated; a floating one is replaced once but not repeated.
-- **ODT**: anchor it **As Character**; a loop of floating pictures stops the render with an error, in ODG too. Setup steps → `docx-tips.md` "Pictures in loops".
+- **ODT**: anchor it **As Character**; a loop of floating pictures stops the render with an error, in ODG too. Setup steps → `docx-templates.md` "Pictures in loops".
 - **PPTX**: a loop repeats the picture at the same place; move each copy with `:transform` (see "Transform" below).
 - **ODP**: loop over slides, one slide per item.
 - **XLSX**: a picture tag in a loop stops the render with an error; a picture in the repeated row is not repeated.
@@ -101,7 +101,7 @@ The `:color(scope, type)` tag prints nothing in the document. Color must be **6-
 - `part` (ODT only): place the `:color(part)` tag right next to the text to color, select that text together with its tags, click **Clear Direct Formatting**, then reapply the font style; the cleared span is the colored section
 - HTML: scopes `p`, `row` (`<tr>`), `cell` (`<td>`) and types `text`, `background` only; Carbone adds `color:`/`background-color:` to the element's `style` attribute and keeps its other properties
 - Cannot be used in aliases or combined with aggregators
-- PPTX (v5.6.0+): scopes `row`, `cell`, `shape` (not `p`) with types `text`, `background`, `border` (`border` on shapes only); table-cell caveats in `pptx-tips.md`
+- PPTX (v5.6.0+): scopes `row`, `cell`, `shape` (not `p`) with types `text`, `background`, `border` (`border` on shapes only); table-cell caveats in `pptx-templates.md`
 - For ODP (text, tables, shapes) and ODT (shapes only): a non-default style must already be applied to the target element in the template
 - Complex nested tables with colors on sub-tables are not fully supported
 
@@ -110,7 +110,7 @@ The `:color(scope, type)` tag prints nothing in the document. Color must be **6-
 {bindColor(myColorRef, format) = d.myVar}
 ```
 - `myColorRef` is a hex color applied in the template (case-insensitive, `#` optional). Carbone replaces it on **every** element that uses it, so pick a color used nowhere else, and bind each reference color only once
-- Write the tag anywhere: end of the document, header, footer, or below the `[i+1]` row even when `d.myVar` belongs to the loop. The tag is removed, but a paragraph holding only `{bindColor}` tags stays as an empty line; end it with `{d:ifNEM:drop(p)}` (`docx-tips.md` "Tag-only paragraphs")
+- Write the tag anywhere: end of the document, header, footer, or below the `[i+1]` row even when `d.myVar` belongs to the loop. The tag is removed, but a paragraph holding only `{bindColor}` tags stays as an empty line; end it with `{d:ifNEM:drop(p)}` (`docx-templates.md` "Tag-only paragraphs")
 - Works on text colors, text backgrounds and table-cell backgrounds; in DOCX also on shape backgrounds and line colors (tag in the document body, not in the shape's alt text; the shape needs an RGB color, not a theme color)
 
 | `format` | Value of `d.myVar` |
@@ -168,7 +168,7 @@ Aliases work inside chart cells too. Declare `{#income = d.income_type_summary}`
 Remove the chart when the array is empty: `{d.regions:ifEM:drop(chart)}` in its alt text.
 
 ### XLSX/Excel
-A native chart whose series use the loop cells grows with the rows under `{o.preReleaseFeatureIn=5018000}` (v5.18.0+): draw the series over the `[i]` and `[i+1]` rows → `xlsx-tips.md`.
+A native chart whose series use the loop cells grows with the rows under `{o.preReleaseFeatureIn=5018000}` (v5.18.0+): draw the series over the `[i]` and `[i+1]` rows → `xlsx-templates.md`.
 
 ### ODT/LibreOffice
 Insert a chart, edit the Data Table. Use `{bindChart(refValue) = d.tag}` in the Categories column to bind a JSON value to a chart reference value:
@@ -405,9 +405,9 @@ Write the tag in the alt text of the shape or picture, or in the shape's own tex
 ```json
 { "initiatives": [ { "name": "Instant payouts", "effort": 4, "impact": 9 }, { "name": "Smart retries", "effort": 2, "impact": 7 } ] }
 ```
-- A loop over several shapes depends on their layer order: the `[i+1]` shape in front, the loop shapes consecutive → `pptx-tips.md` "Shapes"
+- A loop over several shapes depends on their layer order: the `[i+1]` shape in front, the loop shapes consecutive → `pptx-templates.md` "Shapes"
 - A `:transform` tag on a line or a group stops the render with an error: draw lines as thin rectangles and ungroup the shapes to move
-- PPTX walkthroughs (one copy per loop index, a grid, a score marker, a full matrix with colored shapes) → `pptx-tips.md`
+- PPTX walkthroughs (one copy per loop index, a grid, a score marker, a full matrix with colored shapes) → `pptx-templates.md`
 
 ---
 

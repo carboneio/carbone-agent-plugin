@@ -1,4 +1,4 @@
-# Carbone DOCX/ODT: Section & Layout Tips
+# Carbone DOCX/ODT Templates
 
 Read this file when the user asks about Carbone tags in Word/LibreOffice headers and footers, why a header tag throws "missing i+1", how to display a loop value in a header or footer, about floating text boxes used to bridge sections, about page numbers, repeated table headers or a table of contents, how a table row loop is built in Word (the end row, what is copied, the rows below), how to loop over list items or repeat a heading with its table, how wide the columns of a horizontal loop are, how to generate one page per item or insert a page break inside a loop without a trailing blank page, where to put `showBegin`/`showEnd` so a removed block leaves no empty paragraph, how `:drop(col)` removes a table column, why a paragraph holding only `:set`, alias, `{bindColor}` or `{o.}` tags leaves an empty line, how to keep the line breaks of a multi-line value, why a loop does not repeat a picture, how to keep merged cells/rows inside a table loop, or how to draw a horizontal (newspaper-column) repetition in a LibreOffice table.
 

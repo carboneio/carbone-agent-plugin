@@ -85,9 +85,9 @@ IDML templates render to IDML only (omit `convertTo`); open the report in InDesi
 
 ## Format-specific limitations
 
-- **XLSX**: sheet names are capped at 31 characters; dynamic sheet creation is not supported — design an ODS template and convert the report to XLSX. Formulas, merged cells, conditional formatting, tables, charts and pivot tables follow loop rows only with `{o.preReleaseFeatureIn=5018000}` (v5.18.0+); merged cells also do in a sheet that uses `:mergeCell`, which is XLSX only (`xlsx-tips.md`)
-- **ODS**: dynamic sheet creation **is** possible — name the sheet tabs with aliases that resolve to a loop (`{$sheet1}` / `{$sheet2}`), see `xlsx-tips.md` "One sheet per array item"
-- **PPTX**: no slide loops and no table-column (horizontal) loops yet — for one slide per item use an ODP template rendered with `"convertTo": "pptx"`; shapes below a looped table or list do not move (`pptx-tips.md`)
+- **XLSX**: sheet names are capped at 31 characters; dynamic sheet creation is not supported — design an ODS template and convert the report to XLSX. Formulas, merged cells, conditional formatting, tables, charts and pivot tables follow loop rows only with `{o.preReleaseFeatureIn=5018000}` (v5.18.0+); merged cells also do in a sheet that uses `:mergeCell`, which is XLSX only (`xlsx-templates.md`)
+- **ODS**: dynamic sheet creation **is** possible — name the sheet tabs with aliases that resolve to a loop (`{$sheet1}` / `{$sheet2}`), see `xlsx-templates.md` "One sheet per array item"
+- **PPTX**: no slide loops and no table-column (horizontal) loops yet — for one slide per item use an ODP template rendered with `"convertTo": "pptx"`; shapes below a looped table or list do not move (`pptx-templates.md`)
 - **PDF**: see `pdf-templates.md`
 - **XML, SVG**: a self-closing element repeated by a loop leaves an empty copy — give it an end tag or wrap it (`xml-templates.md`, `svg-templates.md`)
 - **IDML**: loops repeat paragraphs only; Carbone never adds pages or frames (`idml-templates.md`)
@@ -98,10 +98,10 @@ IDML templates render to IDML only (omit `convertTo`); open the report in InDesi
 ## Choosing a format
 
 - **Pixel-perfect PDF with full CSS** → HTML (`html-templates.md`)
-- **Paginated documents, headers/footers, long text** → DOCX or ODT (`docx-tips.md`)
+- **Paginated documents, headers/footers, long text** → DOCX or ODT (`docx-templates.md`)
 - **AI-generated content** → Markdown (`markdown-templates.md`)
-- **Spreadsheets with live formulas** → XLSX (formulas follow loop rows with `{o.preReleaseFeatureIn=5018000}`) or ODS (`xlsx-tips.md`)
-- **Presentations** → PPTX, or ODP for one slide per item (`pptx-tips.md`)
+- **Spreadsheets with live formulas** → XLSX (formulas follow loop rows with `{o.preReleaseFeatureIn=5018000}`) or ODS (`xlsx-templates.md`)
+- **Presentations** → PPTX, or ODP for one slide per item (`pptx-templates.md`)
 - **An existing fillable form you cannot rebuild** → PDF (`pdf-templates.md`)
 - **A data payload rather than a document** → XML (`xml-templates.md`), JSON, CSV (`csv-templates.md`) or TXT (`txt-templates.md`)
 - **An image (PNG/JPG/WebP) or one-page PDF drawn in a design tool** → SVG (`svg-templates.md`)

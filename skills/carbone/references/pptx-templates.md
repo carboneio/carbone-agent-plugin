@@ -1,4 +1,4 @@
-# Carbone PPTX: Slide Layout Tips
+# Carbone PPTX/ODP Templates
 
 Read this file when the user designs or debugs a PowerPoint (PPTX) template: where tags work on a slide (text, speaker notes, alt text, link address, chart data sheet), what a loop repeats (table rows, bullets, shapes, chart categories, slides), why shapes below a loop do not move, table loops with totals, sort, filter, dropped rows and nested groups, splitting a long list across slides, one slide per item with an ODP template, repeating and moving shapes with `:transform` (layer order, grids, matrices, score markers), removing a row, shape, picture or chart, pictures and QR codes, `:color` in PPTX tables and shapes, or native PowerPoint charts (formatting their values).
 

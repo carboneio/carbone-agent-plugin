@@ -229,7 +229,7 @@ AC-1002;349,50;Sur commande
 
 ## CSV template or XLSX template converted to CSV
 
-An XLSX or ODS template converted to CSV is the other way: Carbone fills the spreadsheet, then the conversion writes the CSV, quoting the cells itself. Design the spreadsheet with `references/xlsx-tips.md`.
+An XLSX or ODS template converted to CSV is the other way: Carbone fills the spreadsheet, then the conversion writes the CSV, quoting the cells itself. Design the spreadsheet with `references/xlsx-templates.md`.
 
 | | CSV template | XLSX or ODS template |
 |---|---|---|

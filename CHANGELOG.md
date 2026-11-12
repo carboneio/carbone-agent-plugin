@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- `docx-tips.md`, `xlsx-tips.md` and `pptx-tips.md` renamed `docx-templates.md`, `xlsx-templates.md` and `pptx-templates.md`, like the other format guides
+
 ## 2.3.0
 - New guides for CSV, TXT (fixed-width records, receipts, ZPL labels), XML, SVG and IDML templates
 - Word, Excel, PowerPoint, PDF, HTML and Markdown guides checked against every tested example of the docs

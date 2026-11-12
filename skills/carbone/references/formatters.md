@@ -113,7 +113,7 @@ Only `+`, `*`, `-`, `/` are allowed, without extra parentheses. `*` and `/` have
 {d.amount:formatC(LL, acc)}  // -1000.456 > "(1,000.46 dollars)"
 {d.amount:formatC(0, acc)}   // -1000.456 > "($1,000)"
 ```
-With `lang:"fr-fr"` and EUR: `formatN(2, acc)` → `"(1 234,50)"`, `formatC(L, acc)` → `"(1 234,50 €)"`. In XLSX the cell becomes text; to keep a number, use `:formatN` with the cell format `#,##0.00;(#,##0.00)` (→ `xlsx-tips.md`). In ODS, `acc` is ignored.
+With `lang:"fr-fr"` and EUR: `formatN(2, acc)` → `"(1 234,50)"`, `formatC(L, acc)` → `"(1 234,50 €)"`. In XLSX the cell becomes text; to keep a number, use `:formatN` with the cell format `#,##0.00;(#,##0.00)` (→ `xlsx-templates.md`). In ODS, `acc` is ignored.
 
 **`:convCurr` examples** (same options):
 ```
@@ -521,7 +521,7 @@ Tags using `:set` print **nothing**. Execution order is guaranteed within same d
 
 | Formatter | Version | Description |
 |---|---|---|
-| `:mergeCell(parent…)` | v5.18.0+ | XLSX only. Merge the consecutive cells of a column that have the same value into one vertically merged cell: `{d.products[i].category:mergeCell}`. Optional parents merge only within a group: `:mergeCell(.country, .region)`. Must be the last formatter; no pre-release tag needed. Details → `xlsx-tips.md` "Merged cells in a loop" |
+| `:mergeCell(parent…)` | v5.18.0+ | XLSX only. Merge the consecutive cells of a column that have the same value into one vertically merged cell: `{d.products[i].category:mergeCell}`. Optional parents merge only within a group: `:mergeCell(.country, .region)`. Must be the last formatter; no pre-release tag needed. Details → `xlsx-templates.md` "Merged cells in a loop" |
 | `:formatR` | v5.0.4+ | Format a country/region code (in the data) to a human-readable name in the report's language. Accepts ISO 3166-1 Alpha-3 (`FRA`), Alpha-2 (`FR`), or Numeric (`250`). Example: `{d.countryCode:formatR}` |
 | `:imageFit(option)` | v3.2.0+ ENTERPRISE | Resize replacement image to placeholder (DOCX/ODT/PPTX). `fillWidth` (default), `contain`, `fill` |
 | `:autoOrient` | v5.6.0+ ENTERPRISE | Auto-rotate a JPEG image according to its EXIF orientation (camera/smartphone). DOCX only. Use before `:imageFit` (compatible with `contain` and `fillWidth`, not with `fill`). Non-JPEG images are ignored. Example: `{d.photo:autoOrient:imageFit(contain)}` |
