@@ -1,32 +1,17 @@
 # Changelog
 
-## Unreleased
-- `:appendTemplate` is available on Cloud and On-Premise (`formatters.md`)
-- `:sign` is no longer beta (`SKILL.md` §8h, `formatters.md`, `advanced-features.md`)
-- New `claude-directory` branch, rebuilt by the release action, for Anthropic's plugin directory: only the files Claude reads
+## 2.3.0
+- New guides for CSV, TXT (fixed-width records, receipts, ZPL labels), XML, SVG and IDML templates
+- Word, Excel, PowerPoint, PDF, HTML and Markdown guides checked against every tested example of the docs
+- `:appendTemplate` works on Carbone Cloud; `:sign` is no longer beta
+- Fixes: array filters have no `>=` or `<=`; `:drop` does not exist in text formats; barcode options are separate arguments; colors in SVG and Markdown are plain tags
 
 ## 2.2.0
-- Updated for Carbone v5.18.0 (tracked version 5.17.0 → 5.18.0)
-- XLSX pre-release `{o.preReleaseFeatureIn=5018000}`: formulas, merged cells, conditional formatting, validations, tables, charts and pivot tables follow loop rows. `xlsx-tips.md` rewritten around it; `in-template-options.md` row; `SKILL.md` §1, §8l, §9
-- New formatter `:mergeCell` (XLSX): merges identical consecutive values of a column, optionally per parent group. Added to `formatters.md`, `xlsx-tips.md` and `SKILL.md` §9
-- New `acc` option for `:formatN` and `:formatC` (negatives in parentheses). Added to `formatters.md`, `xlsx-tips.md` (text vs number cells) and `SKILL.md` §5
-- `formatters.md`: rounding of halves and negatives; `:formatC` unknown-currency error
-- New reference file `pptx-tips.md`: tag placement, fixed positions, bullet and nested-table loops, one slide per item via ODP, `:transform` on repeated shapes, `:drop`, colors, native charts
-- `docx-tips.md`: page numbers, table headers and TOC; list and heading-plus-table loops; one page per item; `showBegin`/`showEnd` placement; pictures in loops
-- `advanced-features.md`: pictures per format and in loops, barcode sizing, GS1-128 values and barcode fonts, `{bindColor}` formats, file operations, `:sign` rules, `:transform`
-- `pdf-templates.md`: tools to write tags, choosing a method, `:check`/`:uncheck`/`:checkField` when false, radio groups
-- `markdown-templates.md`: style templates with `{o.styleSource}`
-- `html-templates.md`: the same header/footer on every page, with cover-page workarounds; `display-header-footer` and `page-ranges` details
-- Corrected against the v5.18.0 docs:
-  - not supported in PPTX: horizontal loops and `:color(p)`
-  - `:imageFit` works in PPTX
-  - `:transform` needs no flag in v5
-  - `:attachFile` takes a PDF relationship type, not a MIME type
-  - `:appendTemplate` forwards `timezone` and the currency options
-  - barcode sizes above the limits are ignored
-  - `{bindColor}` binds each reference color once, everywhere it appears
-  - Markdown loop rows start with the tag
-  - `echarts@v5` is the default
+- Updated for Carbone v5.18.0
+- Excel formulas, merged cells, tables, charts and pivot tables that follow loop rows (`{o.preReleaseFeatureIn=5018000}`)
+- New `:mergeCell` formatter and `acc` option for `:formatN` and `:formatC`
+- New PowerPoint guide; expanded Word, PDF form, Markdown and HTML guides
+- Fixes: PPTX has no horizontal loops; `:attachFile` takes a PDF relationship type; `{bindColor}` binds each color once
 
 ## 2.1.0
 - Updated for Carbone v5.17.0 (tracked version 5.14.0 → 5.17.0)

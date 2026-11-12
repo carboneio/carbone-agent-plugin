@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "carbone",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Generate invoices, quotes, contracts, reports and statements from your own Word, Excel, PowerPoint, HTML or Markdown templates and JSON data, as PDF or Office files. One universal templating language for every format, from a single document to large batches, with a high-performance engine built for production. Design and fix templates with the Carbone skill, and convert files across 100+ formats.",
   "author": {
     "name": "Carbone",
@@ -113,7 +113,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "Updated for Carbone v5.18.0: the skill now documents Excel formulas, merged cells, charts and pivot tables that follow the rows added by loops, the new :mergeCell formatter, accounting format for negative amounts, a new PowerPoint guide, and expanded guidance for Word, PDF forms, Markdown styles and HTML headers. Sign in with your Carbone account to generate PDF, Word, Excel and PowerPoint documents from your templates and data, find out which data a template expects, convert files across 100+ formats, and manage your template library. Includes the Carbone skill to write, check and fix templates.",
+        "release_notes": "New guides for CSV, TXT, XML, SVG and InDesign templates (import files, receipts, ZPL labels, e-invoices, design-tool layouts), and the Word, Excel, PowerPoint, PDF, HTML and Markdown guides checked against every tested example of the Carbone v5.18.0 docs. Sign in with your Carbone account to generate PDF, Word, Excel and PowerPoint documents from your templates and data, find out which data a template expects, convert files across 100+ formats, and manage your template library. Includes the Carbone skill to write, check and fix templates.",
         "translations": {
           "fr-FR": {
             "subtitle": "PDF et documents via templates",

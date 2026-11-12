@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "carbone",
   "displayName": "Carbone",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Generate PDF, Word, Excel and PowerPoint documents from your own templates and data, from one file to large batches. One universal templating language for Office, HTML and Markdown, a production-ready engine, 100+ formats, and the Carbone skill to design templates.",
   "author": {
     "name": "Carbone",
